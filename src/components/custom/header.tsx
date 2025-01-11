@@ -13,7 +13,7 @@ import { Button } from "../ui/button";
 const Header = () => {
   return (
     <header>
-      <nav className="container mx-auto flex items-center justify-between px-8 py-4">
+      <nav className="container mx-auto flex items-center justify-between px-24 py-6">
         <div className="flex items-center space-x-4">
           <Logo />
           <Select>
