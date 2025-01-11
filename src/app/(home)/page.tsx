@@ -1,6 +1,24 @@
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import Image from "next/image";
+import ProductCard, { Product } from "./components/product-card";
+
+const products: Product[] = [
+  {
+    id: "1",
+    name: "Pizza",
+    description: "Delicious pizza",
+    image: "/pizza-hero.jpg",
+    price: 10,
+  },
+  {
+    id: "2",
+    name: "Beverages",
+    description: "Refreshing beverages",
+    image: "/pizza-hero.jpg",
+    price: 5,
+  },
+];
 
 export default function Home() {
   return (
@@ -30,7 +48,7 @@ export default function Home() {
       </section>
       <section className="container mx-auto flex items-center justify-between px-24 py-4">
         <div>
-          <Tabs defaultValue="pizza" className="w-[400px]">
+          <Tabs defaultValue="pizza">
             <TabsList>
               <TabsTrigger value="pizza" className="text-base">
                 Pizza
@@ -40,10 +58,18 @@ export default function Home() {
               </TabsTrigger>
             </TabsList>
             <TabsContent value="pizza">
-              Make changes to your pizza here.
+              <div className="mt-6 grid grid-cols-4 gap-6">
+                {products.map((product) => (
+                  <ProductCard key={product.id} product={product} />
+                ))}
+              </div>
             </TabsContent>
             <TabsContent value="beverages">
-              Change your beverages here.
+              <div className="mt-6 grid grid-cols-4 gap-6">
+                {products.map((product) => (
+                  <ProductCard key={product.id} product={product} />
+                ))}
+              </div>
             </TabsContent>
           </Tabs>
         </div>
