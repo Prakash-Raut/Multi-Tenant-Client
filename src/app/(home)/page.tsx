@@ -8,14 +8,14 @@ const products: Product[] = [
     id: "1",
     name: "Pizza",
     description: "Delicious pizza",
-    image: "/pizza-hero.jpg",
+    image: "/pizza-main.png",
     price: 10,
   },
   {
     id: "2",
     name: "Beverages",
     description: "Refreshing beverages",
-    image: "/pizza-hero.jpg",
+    image: "/pizza-main.png",
     price: 5,
   },
 ];
@@ -37,13 +37,7 @@ export default function Home() {
           </Button>
         </div>
         <div>
-          <Image
-            src="/pizza-hero.jpg"
-            alt="pizza"
-            width={400}
-            height={400}
-            objectFit="contain"
-          />
+          <Image src="/pizza-main.png" alt="pizza" width={400} height={400} />
         </div>
       </section>
       <section className="container mx-auto flex items-center justify-between px-24 py-4">
