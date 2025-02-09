@@ -28,8 +28,6 @@ const Header = async () => {
 
   const tenants: { data: Tenant[] } = await tenantResponse.json();
 
-  console.log(tenants);
-
   return (
     <header>
       <nav className="container mx-auto flex items-center justify-between px-24 py-6">

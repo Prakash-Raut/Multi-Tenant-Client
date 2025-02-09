@@ -1,5 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { api } from "@/lib/config";
+import { Category } from "@/types";
 import Image from "next/image";
 import ProductCard, { Product } from "./components/product-card";
 
@@ -20,7 +22,24 @@ const products: Product[] = [
   },
 ];
 
-export default function Home() {
+export default async function Home() {
+  const categoryResponse = await fetch(
+    `${api}/api/catalog/categories?perPage=100&currentPage=1`,
+    {
+      next: {
+        revalidate: 3600, // 1 hour
+      },
+    }
+  );
+
+  if (!categoryResponse.ok) {
+    throw new Error("Failed to fetch categories");
+  }
+
+  const categories: Category[] = await categoryResponse.json();
+
+  console.log(categories);
+
   return (
     <>
       <section className="container mx-auto flex items-center justify-between px-24 py-4">
@@ -42,14 +61,17 @@ export default function Home() {
       </section>
       <section className="container mx-auto flex items-center justify-between px-24 py-4">
         <div>
-          <Tabs defaultValue="pizza">
+          <Tabs defaultValue={categories[0]._id}>
             <TabsList>
-              <TabsTrigger value="pizza" className="text-base">
-                Pizza
-              </TabsTrigger>
-              <TabsTrigger value="beverages" className="text-base">
-                Beverages
-              </TabsTrigger>
+              {categories.map((category: Category) => (
+                <TabsTrigger
+                  key={category._id}
+                  value={category._id}
+                  className="text-base"
+                >
+                  {category.name}
+                </TabsTrigger>
+              ))}
             </TabsList>
             <TabsContent value="pizza">
               <div className="mt-6 grid grid-cols-4 gap-6">
