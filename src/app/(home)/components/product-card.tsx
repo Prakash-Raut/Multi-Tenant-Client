@@ -18,14 +18,7 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { ShoppingCart } from "lucide-react";
 import Image from "next/image";
 import ToppingList from "./topping-list";
-
-export type Product = {
-  id: string;
-  name: string;
-  description: string;
-  image: string;
-  price: number;
-};
+import { Product } from "@/types";
 
 type PropTypes = { product: Product };
 
@@ -34,7 +27,7 @@ const ProductCard = ({ product }: PropTypes) => {
     <Card className="rounded-2xl border-none">
       <CardHeader className="flex items-center justify-center">
         <Image
-          src={product.image}
+          src={"/pizza-main.png"}
           alt={product.name}
           width={150}
           height={150}
@@ -47,7 +40,7 @@ const ProductCard = ({ product }: PropTypes) => {
       <CardFooter className="flex items-center justify-between">
         <p className="">
           <span>From </span>
-          <span className="font-bold">₹{product.price}</span>
+          <span className="font-bold">₹{100}</span>
         </p>
         <Dialog>
           <DialogTrigger className="rounded-full bg-orange-200 px-6 py-2 text-orange-500 shadow outline-none transition-all duration-150 ease-linear hover:bg-orange-300 hover:shadow-lg focus:outline-none">
@@ -153,7 +146,7 @@ const ProductCard = ({ product }: PropTypes) => {
                 <div className="mt-12 flex items-center justify-between">
                   <span className="text-lg font-bold">
                     &#8377;
-                    {product.price}
+                    {100}
                   </span>
                   <Button>
                     <ShoppingCart size={20} />

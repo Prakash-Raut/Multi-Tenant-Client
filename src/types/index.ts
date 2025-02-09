@@ -24,3 +24,15 @@ export interface Attribute {
   defaultValue: string;
   availableOptions: string[];
 }
+
+export interface Product {
+  _id: string;
+  name: string;
+  description: string;
+  image: string;
+  priceConfiguration: PriceConfiguration;
+  attributes: Attribute[];
+  tenantId: string;
+  categoryId: string;
+  isPublish: boolean;
+}
