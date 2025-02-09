@@ -34,5 +34,6 @@ export interface Product {
   attributes: Attribute[];
   tenantId: string;
   categoryId: string;
+  category: Category;
   isPublish: boolean;
 }
