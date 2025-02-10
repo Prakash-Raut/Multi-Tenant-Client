@@ -26,6 +26,7 @@ type ChosenConfig = {
 };
 
 const ProductModal = ({ product }: { product: Product }) => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const dispatch = useAppDispatch();
   const cartItems = useAppSelector((state) => state.cart.cartItems);
   const defaultConfig = Object.entries(product.category.priceConfiguration)
@@ -120,10 +121,11 @@ const ProductModal = ({ product }: { product: Product }) => {
       qty: 1,
     };
     dispatch(addToCart(itemToAdd));
+    setIsModalOpen(false);
   };
 
   return (
-    <Dialog>
+    <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
       <DialogTrigger className="rounded-full bg-orange-200 px-6 py-2 text-orange-500 shadow outline-none transition-all duration-150 ease-linear hover:bg-orange-300 hover:shadow-lg focus:outline-none">
         Choose
       </DialogTrigger>
