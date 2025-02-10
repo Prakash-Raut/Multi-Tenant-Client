@@ -122,6 +122,7 @@ const ProductModal = ({ product }: { product: Product }) => {
     };
     dispatch(addToCart(itemToAdd));
     setIsModalOpen(false);
+    setSelectedToppings([]);
   };
 
   return (
