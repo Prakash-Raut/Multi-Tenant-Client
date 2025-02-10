@@ -11,8 +11,9 @@ import {
 } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { addToCart } from "@/lib/store/features/cart/cartSlice";
-import { useAppDispatch } from "@/lib/store/hooks";
+import { addToCart, CartItem } from "@/lib/store/features/cart/cartSlice";
+import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
+import { cn, hashTheItem } from "@/lib/utils";
 import { Product, Topping } from "@/types";
 import { ShoppingCart } from "lucide-react";
 import Image from "next/image";
@@ -26,6 +27,7 @@ type ChosenConfig = {
 
 const ProductModal = ({ product }: { product: Product }) => {
   const dispatch = useAppDispatch();
+  const cartItems = useAppSelector((state) => state.cart.cartItems);
   const defaultConfig = Object.entries(product.category.priceConfiguration)
     .map(([key, value]) => {
       return {
@@ -57,7 +59,25 @@ const ProductModal = ({ product }: { product: Product }) => {
     );
 
     return toppingsTotal + configTotal;
-  }, [chosenConfig, selectedToppings]);
+  }, [chosenConfig, selectedToppings, product]);
+
+  const alreadyHasInCart = useMemo(() => {
+    const currentConfiguration = {
+      _id: product._id,
+      name: product.name,
+      image: product.image,
+      priceConfiguration: product.priceConfiguration,
+      chosenConfiguration: {
+        priceConfiguration: { ...chosenConfig },
+        selectedToppings: selectedToppings,
+      },
+      qty: 1,
+    };
+
+    const hash = hashTheItem(currentConfiguration);
+
+    return cartItems.some((item) => item.hash === hash);
+  }, [product, chosenConfig, selectedToppings, cartItems]);
 
   const handleRadioChange = (key: string, value: string) => {
     startTransition(() => {
@@ -88,12 +108,16 @@ const ProductModal = ({ product }: { product: Product }) => {
   };
 
   const handleAddToCart = (product: Product) => {
-    const itemToAdd = {
-      product,
+    const itemToAdd: CartItem = {
+      _id: product._id,
+      name: product.name,
+      image: product.image,
+      priceConfiguration: product.priceConfiguration,
       chosenConfiguration: {
         priceConfiguration: chosenConfig!,
         selectedToppings: selectedToppings,
       },
+      qty: 1,
     };
     dispatch(addToCart(itemToAdd));
   };
@@ -164,9 +188,15 @@ const ProductModal = ({ product }: { product: Product }) => {
                 &#8377;
                 {totalPrice}
               </span>
-              <Button onClick={() => handleAddToCart(product)}>
+              <Button
+                className={cn(alreadyHasInCart ? "bg-gray-700" : "bg-primary")}
+                onClick={() => handleAddToCart(product)}
+                disabled={alreadyHasInCart}
+              >
                 <ShoppingCart size={20} />
-                <span>Add to cart</span>
+                <span>
+                  {alreadyHasInCart ? "Already in cart" : "Add to cart"}
+                </span>
               </Button>
             </div>
           </div>
