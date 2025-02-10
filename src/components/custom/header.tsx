@@ -1,14 +1,8 @@
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { api } from "@/lib/config";
 import { Tenant } from "@/types";
 import Logo from "../icons/logo";
 import NavRight from "./nav-right";
+import TenantSelect from "./tenant-select";
 
 const Header = async () => {
   const tenantResponse = await fetch(
@@ -31,18 +25,7 @@ const Header = async () => {
       <nav className="container mx-auto flex items-center justify-between px-24 py-6">
         <div className="flex items-center space-x-4">
           <Logo />
-          <Select>
-            <SelectTrigger className="w-[180px] focus:ring-0">
-              <SelectValue placeholder="Select Restaurant" />
-            </SelectTrigger>
-            <SelectContent>
-              {tenants.data.map((tenant) => (
-                <SelectItem key={tenant.id} value={String(tenant.id)}>
-                  {tenant.name}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
+          <TenantSelect resturants={tenants} />
         </div>
         <NavRight />
       </nav>

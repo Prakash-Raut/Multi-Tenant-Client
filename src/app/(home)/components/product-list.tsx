@@ -3,7 +3,12 @@ import { api } from "@/lib/config";
 import { Category, Product } from "@/types";
 import ProductCard from "./product-card";
 
-const ProductList = async () => {
+const ProductList = async ({
+  searchParams,
+}: {
+  searchParams: { restaurantId: string };
+}) => {
+  const { restaurantId } = searchParams;
   // TODO: Make TenantId Dynamic
   const [categoryResponse, productResponse] = await Promise.all([
     fetch(`${api}/api/catalog/categories?perPage=100&currentPage=1`, {
@@ -11,11 +16,14 @@ const ProductList = async () => {
         revalidate: 3600, // 1 hour
       },
     }),
-    fetch(`${api}/api/catalog/products?perPage=100&currentPage=1&tenantId=10`, {
-      next: {
-        revalidate: 3600, // 1 hour
-      },
-    }),
+    fetch(
+      `${api}/api/catalog/products?perPage=100&currentPage=1&tenantId=${restaurantId}`,
+      {
+        next: {
+          revalidate: 3600, // 1 hour
+        },
+      }
+    ),
   ]);
 
   if (!categoryResponse.ok) {

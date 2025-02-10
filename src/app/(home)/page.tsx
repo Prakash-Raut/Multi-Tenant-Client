@@ -4,7 +4,11 @@ import { Suspense } from "react";
 import FallBackSkeleton from "./components/fallback-skeleton";
 import ProductList from "./components/product-list";
 
-export default function Home() {
+export default function Home({
+  searchParams,
+}: {
+  searchParams: { restaurantId: string };
+}) {
   return (
     <>
       <section className="container mx-auto flex items-center justify-between px-24 py-4">
@@ -25,7 +29,7 @@ export default function Home() {
         </div>
       </section>
       <Suspense fallback={<FallBackSkeleton />}>
-        <ProductList />
+        <ProductList searchParams={searchParams} />
       </Suspense>
     </>
   );
