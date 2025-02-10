@@ -14,6 +14,8 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Product } from "@/types";
 import { ShoppingCart } from "lucide-react";
 import Image from "next/image";
+import { Suspense } from "react";
+import FallBackSkeleton from "./fallback-skeleton";
 import ToppingList from "./topping-list";
 
 const ProductModal = ({ product }: { product: Product }) => {
@@ -70,7 +72,9 @@ const ProductModal = ({ product }: { product: Product }) => {
                 </div>
               )
             )}
-            <ToppingList />
+            <Suspense fallback={<FallBackSkeleton />}>
+              <ToppingList />
+            </Suspense>
             <div className="mt-12 flex items-center justify-between">
               <span className="text-lg font-bold">
                 &#8377;

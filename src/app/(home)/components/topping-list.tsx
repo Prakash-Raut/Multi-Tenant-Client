@@ -1,6 +1,6 @@
 import { api } from "@/lib/config";
 import { Topping } from "@/types";
-import { useEffect, useState } from "react";
+import { startTransition, useEffect, useState } from "react";
 import ToppingCard from "./topping-card";
 
 const ToppingList = () => {
@@ -22,12 +22,16 @@ const ToppingList = () => {
       (t) => t._id === topping._id
     );
 
-    if (isAlreadySelected) {
-      setSelectedToppings((prev) => prev.filter((t) => t._id !== topping._id));
-      return;
-    }
+    startTransition(() => {
+      if (isAlreadySelected) {
+        setSelectedToppings((prev) =>
+          prev.filter((t) => t._id !== topping._id)
+        );
+        return;
+      }
 
-    setSelectedToppings((prev) => [...prev, topping]);
+      setSelectedToppings((prev) => [...prev, topping]);
+    });
   };
 
   return (
