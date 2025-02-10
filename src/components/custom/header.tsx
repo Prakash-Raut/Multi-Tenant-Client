@@ -7,10 +7,11 @@ import {
 } from "@/components/ui/select";
 import { api } from "@/lib/config";
 import { Tenant } from "@/types";
-import { Phone, ShoppingBasket } from "lucide-react";
+import { Phone } from "lucide-react";
 import Link from "next/link";
 import Logo from "../icons/logo";
 import { Button } from "../ui/button";
+import Basket from "./basket";
 
 const Header = async () => {
   const tenantResponse = await fetch(
@@ -59,14 +60,7 @@ const Header = async () => {
               </Link>
             </li>
           </ul>
-          <div className="relative">
-            <Link href="#" className="font-medium hover:text-primary">
-              <ShoppingBasket size={20} />
-            </Link>
-            <span className="absolute -right-5 -top-4 inline-flex h-6 w-6 items-center justify-center rounded-full bg-primary font-bold text-white">
-              3
-            </span>
-          </div>
+          <Basket />
           <div className="flex items-center space-x-2">
             <Phone size={20} />
             <span>+91 9800 980 980</span>
