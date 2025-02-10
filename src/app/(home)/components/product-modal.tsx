@@ -150,12 +150,15 @@ const ProductModal = ({ product }: { product: Product }) => {
                 </div>
               )
             )}
-            <Suspense fallback={<FallBackSkeleton />}>
-              <ToppingList
-                selectedToppings={selectedToppings}
-                handleSelectTopping={handleSelectTopping}
-              />
-            </Suspense>
+            {/* TODO: Make this condition dynamic (add hasTopping in Backend Category Route) */}
+            {product.category.name === "Pizza" && (
+              <Suspense fallback={<FallBackSkeleton />}>
+                <ToppingList
+                  selectedToppings={selectedToppings}
+                  handleSelectTopping={handleSelectTopping}
+                />
+              </Suspense>
+            )}
             <div className="mt-12 flex items-center justify-between">
               <span className="text-lg font-bold">
                 &#8377;
