@@ -18,6 +18,7 @@ import { Product, Topping } from "@/types";
 import { ShoppingCart } from "lucide-react";
 import Image from "next/image";
 import { startTransition, Suspense, useMemo, useState } from "react";
+import { toast } from "sonner";
 import FallBackSkeleton from "./fallback-skeleton";
 import ToppingList from "./topping-list";
 
@@ -123,6 +124,7 @@ const ProductModal = ({ product }: { product: Product }) => {
     dispatch(addToCart(itemToAdd));
     setIsModalOpen(false);
     setSelectedToppings([]);
+    toast.success("Item added to cart");
   };
 
   return (

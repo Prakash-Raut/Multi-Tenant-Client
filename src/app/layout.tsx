@@ -1,4 +1,5 @@
 import Header from "@/components/custom/header";
+import { Toaster } from "@/components/ui/sonner";
 import type { Metadata } from "next";
 import { Manrope } from "next/font/google";
 import "./globals.css";
@@ -25,6 +26,7 @@ export default function RootLayout({
         <body className={`${manrope.variable} antialiased`}>
           <Header />
           <main>{children}</main>
+          <Toaster richColors />
         </body>
       </StoreProvider>
     </html>
