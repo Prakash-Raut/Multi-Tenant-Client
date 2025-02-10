@@ -1,9 +1,15 @@
 import { api } from "@/lib/config";
 import { Topping } from "@/types";
-import { startTransition, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import ToppingCard from "./topping-card";
 
-const ToppingList = () => {
+const ToppingList = ({
+  selectedToppings,
+  handleSelectTopping,
+}: {
+  selectedToppings: Topping[];
+  handleSelectTopping: (topping: Topping) => void;
+}) => {
   const [toppings, setToppings] = useState<Topping[]>([]);
 
   useEffect(() => {
@@ -14,25 +20,6 @@ const ToppingList = () => {
     };
     fetchToppings();
   }, []);
-
-  const [selectedToppings, setSelectedToppings] = useState<Topping[]>([]);
-
-  const handleSelectTopping = (topping: Topping) => {
-    const isAlreadySelected = selectedToppings.some(
-      (t) => t._id === topping._id
-    );
-
-    startTransition(() => {
-      if (isAlreadySelected) {
-        setSelectedToppings((prev) =>
-          prev.filter((t) => t._id !== topping._id)
-        );
-        return;
-      }
-
-      setSelectedToppings((prev) => [...prev, topping]);
-    });
-  };
 
   return (
     <section className="mt-6">

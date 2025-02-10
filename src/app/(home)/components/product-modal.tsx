@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { Product } from "@/types";
+import { Product, Topping } from "@/types";
 import { ShoppingCart } from "lucide-react";
 import Image from "next/image";
 import { startTransition, Suspense, useState } from "react";
@@ -24,10 +24,7 @@ type SelectedOption = {
 
 const ProductModal = ({ product }: { product: Product }) => {
   const [selectedOption, setSelectedOption] = useState<SelectedOption>();
-
-  const handleAddToCart = () => {
-    console.log("Add to cart clicked");
-  };
+  const [selectedToppings, setSelectedToppings] = useState<Topping[]>([]);
 
   const handleRadioChange = (key: string, value: string) => {
     startTransition(() => {
@@ -39,6 +36,27 @@ const ProductModal = ({ product }: { product: Product }) => {
       });
     });
     console.log(selectedOption);
+  };
+
+  const handleSelectTopping = (topping: Topping) => {
+    const isAlreadySelected = selectedToppings.some(
+      (t) => t._id === topping._id
+    );
+
+    startTransition(() => {
+      if (isAlreadySelected) {
+        setSelectedToppings((prev) =>
+          prev.filter((t) => t._id !== topping._id)
+        );
+        return;
+      }
+
+      setSelectedToppings((prev) => [...prev, topping]);
+    });
+  };
+
+  const handleAddToCart = () => {
+    console.log("Add to cart clicked");
   };
 
   return (
@@ -94,7 +112,10 @@ const ProductModal = ({ product }: { product: Product }) => {
               )
             )}
             <Suspense fallback={<FallBackSkeleton />}>
-              <ToppingList />
+              <ToppingList
+                selectedToppings={selectedToppings}
+                handleSelectTopping={handleSelectTopping}
+              />
             </Suspense>
             <div className="mt-12 flex items-center justify-between">
               <span className="text-lg font-bold">
