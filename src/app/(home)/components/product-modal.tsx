@@ -1,3 +1,5 @@
+"use client";
+
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -15,6 +17,10 @@ import Image from "next/image";
 import ToppingList from "./topping-list";
 
 const ProductModal = ({ product }: { product: Product }) => {
+  const handleAddToCart = () => {
+    console.log("Add to cart clicked");
+  };
+
   return (
     <Dialog>
       <DialogTrigger className="rounded-full bg-orange-200 px-6 py-2 text-orange-500 shadow outline-none transition-all duration-150 ease-linear hover:bg-orange-300 hover:shadow-lg focus:outline-none">
@@ -70,7 +76,7 @@ const ProductModal = ({ product }: { product: Product }) => {
                 &#8377;
                 {100}
               </span>
-              <Button>
+              <Button onClick={handleAddToCart}>
                 <ShoppingCart size={20} />
                 <span>Add to cart</span>
               </Button>

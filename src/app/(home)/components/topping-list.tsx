@@ -1,42 +1,29 @@
-"use client";
-
-import { useState } from "react";
-import ToppingCard, { Topping } from "./topping-card";
-
-const toppings: Topping[] = [
-  {
-    id: "1",
-    name: "Pepperoni",
-    image: "/pizza-main.png",
-    price: 0.5,
-    isAvailable: true,
-  },
-  {
-    id: "2",
-    name: "Mushrooms",
-    image: "/pizza-main.png",
-    price: 0.5,
-    isAvailable: true,
-  },
-  {
-    id: "3",
-    name: "Extra cheese",
-    image: "/pizza-main.png",
-    price: 0.5,
-    isAvailable: true,
-  },
-];
+import { api } from "@/lib/config";
+import { Topping } from "@/types";
+import { useEffect, useState } from "react";
+import ToppingCard from "./topping-card";
 
 const ToppingList = () => {
-  const [selectedToppings, setSelectedToppings] = useState<Topping[]>([
-    toppings[0],
-  ]);
+  const [toppings, setToppings] = useState<Topping[]>([]);
+
+  useEffect(() => {
+    const fetchToppings = async () => {
+      const toppingResponse = await fetch(`${api}/api/catalog/toppings`);
+      const toppingsData = await toppingResponse.json();
+      setToppings(toppingsData);
+    };
+    fetchToppings();
+  }, []);
+
+  const [selectedToppings, setSelectedToppings] = useState<Topping[]>([]);
 
   const handleSelectTopping = (topping: Topping) => {
-    const isAlreadySelected = selectedToppings.some((t) => t.id === topping.id);
+    const isAlreadySelected = selectedToppings.some(
+      (t) => t._id === topping._id
+    );
 
     if (isAlreadySelected) {
-      setSelectedToppings((prev) => prev.filter((t) => t.id !== topping.id));
+      setSelectedToppings((prev) => prev.filter((t) => t._id !== topping._id));
       return;
     }
 
@@ -49,7 +36,7 @@ const ToppingList = () => {
       <div className="mt-2 grid grid-cols-3 gap-4">
         {toppings.map((topping) => (
           <ToppingCard
-            key={topping.id}
+            key={topping._id}
             topping={topping}
             selectedToppings={selectedToppings}
             handleSelectTopping={handleSelectTopping}

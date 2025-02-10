@@ -37,3 +37,12 @@ export interface Product {
   category: Category;
   isPublish: boolean;
 }
+
+export interface Topping {
+  _id: string;
+  name: string;
+  image: string;
+  price: number;
+  tenantId: string;
+  isPublish: boolean;
+}

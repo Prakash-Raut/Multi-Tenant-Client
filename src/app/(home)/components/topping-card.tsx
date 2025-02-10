@@ -2,16 +2,9 @@
 
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { Topping } from "@/types";
 import { CircleCheck } from "lucide-react";
 import Image from "next/image";
-
-export type Topping = {
-  id: string;
-  name: string;
-  image: string;
-  price: number;
-  isAvailable: boolean;
-};
 
 type ToppingCardProps = {
   topping: Topping;
@@ -24,7 +17,7 @@ const ToppingCard = ({
   selectedToppings,
   handleSelectTopping,
 }: ToppingCardProps) => {
-  const isCurrentSelected = selectedToppings.some((t) => t.id === topping.id);
+  const isCurrentSelected = selectedToppings.some((t) => t._id === topping._id);
   return (
     <Button
       variant="outline"
@@ -34,7 +27,7 @@ const ToppingCard = ({
       )}
       onClick={() => handleSelectTopping(topping)}
     >
-      <Image src={topping.image} alt={topping.name} width={80} height={80} />
+      <Image src={""} alt={topping.name} width={80} height={80} />
       <h5>{topping.name}</h5>
       <p>&#8377;{topping.price}</p>
       <CircleCheck
