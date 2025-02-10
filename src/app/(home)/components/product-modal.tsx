@@ -26,7 +26,21 @@ type ChosenConfig = {
 
 const ProductModal = ({ product }: { product: Product }) => {
   const dispatch = useAppDispatch();
-  const [chosenConfig, setChosenConfig] = useState<ChosenConfig>();
+  const defaultConfig = Object.entries(product.category.priceConfiguration)
+    .map(([key, value]) => {
+      return {
+        [key]: value.availableOptions[0],
+      };
+    })
+    .reduce((acc, curr) => {
+      return {
+        ...acc,
+        ...curr,
+      };
+    }, {});
+  const [chosenConfig, setChosenConfig] = useState<ChosenConfig>(
+    defaultConfig as unknown as ChosenConfig
+  );
   const [selectedToppings, setSelectedToppings] = useState<Topping[]>([]);
 
   const handleRadioChange = (key: string, value: string) => {
@@ -38,7 +52,6 @@ const ProductModal = ({ product }: { product: Product }) => {
         };
       });
     });
-    console.log(chosenConfig);
   };
 
   const handleSelectTopping = (topping: Topping) => {
