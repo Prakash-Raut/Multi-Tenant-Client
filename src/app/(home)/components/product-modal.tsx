@@ -14,13 +14,31 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Product } from "@/types";
 import { ShoppingCart } from "lucide-react";
 import Image from "next/image";
-import { Suspense } from "react";
+import { startTransition, Suspense, useState } from "react";
 import FallBackSkeleton from "./fallback-skeleton";
 import ToppingList from "./topping-list";
 
+type SelectedOption = {
+  [key: string]: string;
+};
+
 const ProductModal = ({ product }: { product: Product }) => {
+  const [selectedOption, setSelectedOption] = useState<SelectedOption>();
+
   const handleAddToCart = () => {
     console.log("Add to cart clicked");
+  };
+
+  const handleRadioChange = (key: string, value: string) => {
+    startTransition(() => {
+      setSelectedOption((prev) => {
+        return {
+          ...prev,
+          [key]: value,
+        };
+      });
+    });
+    console.log(selectedOption);
   };
 
   return (
@@ -50,6 +68,9 @@ const ProductModal = ({ product }: { product: Product }) => {
                   <h4 className="mt-6">{key}</h4>
                   <RadioGroup
                     defaultValue={value.availableOptions[0]}
+                    onValueChange={(value) => {
+                      handleRadioChange(key, value);
+                    }}
                     className="mt-2 grid grid-cols-3 gap-4"
                   >
                     {value.availableOptions.map((option) => (

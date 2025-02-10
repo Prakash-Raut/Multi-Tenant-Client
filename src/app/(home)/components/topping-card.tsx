@@ -27,7 +27,7 @@ const ToppingCard = ({
       )}
       onClick={() => handleSelectTopping(topping)}
     >
-      <Image src={""} alt={topping.name} width={80} height={80} />
+      <Image src="/pizza-main.png" alt={topping.name} width={80} height={80} />
       <h5>{topping.name}</h5>
       <p>&#8377;{topping.price}</p>
       <CircleCheck
