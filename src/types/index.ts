@@ -25,13 +25,27 @@ export interface Attribute {
   availableOptions: string[];
 }
 
+export interface ProductPriceConfiguration {
+  [key: string]: {
+    priceType: "base" | "additional";
+    availableOptions: {
+      [key: string]: number;
+    };
+  };
+}
+
+export interface ProductAttribute {
+  name: string;
+  value: string | boolean;
+}
+
 export interface Product {
   _id: string;
   name: string;
   description: string;
   image: string;
-  priceConfiguration: PriceConfiguration;
-  attributes: Attribute[];
+  priceConfiguration: ProductPriceConfiguration;
+  attributes: ProductAttribute[];
   tenantId: string;
   categoryId: string;
   category: Category;

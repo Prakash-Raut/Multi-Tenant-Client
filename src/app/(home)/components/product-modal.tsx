@@ -16,7 +16,7 @@ import { useAppDispatch } from "@/lib/store/hooks";
 import { Product, Topping } from "@/types";
 import { ShoppingCart } from "lucide-react";
 import Image from "next/image";
-import { startTransition, Suspense, useState } from "react";
+import { startTransition, Suspense, useMemo, useState } from "react";
 import FallBackSkeleton from "./fallback-skeleton";
 import ToppingList from "./topping-list";
 
@@ -42,6 +42,22 @@ const ProductModal = ({ product }: { product: Product }) => {
     defaultConfig as unknown as ChosenConfig
   );
   const [selectedToppings, setSelectedToppings] = useState<Topping[]>([]);
+
+  const totalPrice = useMemo(() => {
+    const toppingsTotal = selectedToppings.reduce(
+      (acc, curr) => acc + curr.price,
+      0
+    );
+    const configTotal = Object.entries(chosenConfig).reduce(
+      (acc, [key, value]) => {
+        const price = product.priceConfiguration[key].availableOptions[value];
+        return acc + price;
+      },
+      0
+    );
+
+    return toppingsTotal + configTotal;
+  }, [chosenConfig, selectedToppings]);
 
   const handleRadioChange = (key: string, value: string) => {
     startTransition(() => {
@@ -143,7 +159,7 @@ const ProductModal = ({ product }: { product: Product }) => {
             <div className="mt-12 flex items-center justify-between">
               <span className="text-lg font-bold">
                 &#8377;
-                {100}
+                {totalPrice}
               </span>
               <Button onClick={() => handleAddToCart(product)}>
                 <ShoppingCart size={20} />
