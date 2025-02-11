@@ -25,7 +25,9 @@ export default function RootLayout({
       <StoreProvider>
         <body className={`${manrope.variable} antialiased`}>
           <Header />
-          <main>{children}</main>
+          <main className="container mx-auto flex items-center justify-between px-24 py-6">
+            {children}
+          </main>
           <Toaster richColors />
         </body>
       </StoreProvider>
