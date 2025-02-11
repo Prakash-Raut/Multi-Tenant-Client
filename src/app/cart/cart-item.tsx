@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import { useTotal } from "@/lib/hooks/useTotal";
 import {
   changeQty,
   CartItem as Item,
@@ -10,6 +11,7 @@ import QtyChanger from "./qty-changer";
 
 const CartItem = ({ item }: { item: Item }) => {
   const dispatch = useAppDispatch();
+  const total = useTotal(item);
   return (
     <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
       <div className="flex w-3/4 items-center">
@@ -46,7 +48,7 @@ const CartItem = ({ item }: { item: Item }) => {
           </QtyChanger>
         </div>
         <div className="flex items-center">
-          <div className="w-12 font-bold">&#8377;{300}</div>
+          <div className="w-12 font-bold">&#8377;{total * item.qty}</div>
           <Button
             variant="outline"
             size="icon"
