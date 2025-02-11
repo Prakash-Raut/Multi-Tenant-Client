@@ -47,7 +47,13 @@ const CartItem = ({ item }: { item: Item }) => {
         </div>
         <div className="flex items-center">
           <div className="w-12 font-bold">&#8377;{300}</div>
-          <Button variant="outline" size="icon" onClick={() => {}}>
+          <Button
+            variant="outline"
+            size="icon"
+            onClick={() =>
+              dispatch(changeQty({ hash: item.hash as string, qty: 0 }))
+            }
+          >
             <X size={16} />
           </Button>
         </div>

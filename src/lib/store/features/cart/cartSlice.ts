@@ -51,6 +51,17 @@ export const cartSlice = createSlice({
     ) => {
       const { hash, qty } = action.payload;
       const index = state.cartItems.findIndex((item) => item.hash === hash);
+
+      if (qty === 0) {
+        state.cartItems.splice(index, 1);
+        // Save to local storage
+        window.localStorage.setItem(
+          "cartItems",
+          JSON.stringify(state.cartItems)
+        );
+        return;
+      }
+
       state.cartItems[index].qty = Math.max(
         1,
         state.cartItems[index].qty + qty
