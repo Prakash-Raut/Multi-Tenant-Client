@@ -1,20 +1,27 @@
 import { api } from "@/lib/config";
 import { Topping } from "@/types";
+import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import ToppingCard from "./topping-card";
+
+type ToppingListProps = {
+  selectedToppings: Topping[];
+  handleSelectTopping: (topping: Topping) => void;
+};
 
 const ToppingList = ({
   selectedToppings,
   handleSelectTopping,
-}: {
-  selectedToppings: Topping[];
-  handleSelectTopping: (topping: Topping) => void;
-}) => {
+}: ToppingListProps) => {
+  const searchParams = useSearchParams();
+  const tenantId = searchParams.get("restaurantId");
   const [toppings, setToppings] = useState<Topping[]>([]);
 
   useEffect(() => {
     const fetchToppings = async () => {
-      const toppingResponse = await fetch(`${api}/api/catalog/toppings`);
+      const toppingResponse = await fetch(
+        `${api}/api/catalog/toppings?tenantId=${tenantId}`
+      );
       const toppingsData = await toppingResponse.json();
       setToppings(toppingsData);
     };
