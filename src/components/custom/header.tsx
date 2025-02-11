@@ -1,8 +1,10 @@
 import { api } from "@/lib/config";
 import { getSession } from "@/lib/session";
 import { Tenant } from "@/types";
+import Link from "next/link";
 import Logo from "../icons/logo";
 import { Button } from "../ui/button";
+import Logout from "./logout";
 import NavRight from "./nav-right";
 import TenantSelect from "./tenant-select";
 
@@ -36,7 +38,13 @@ const Header = async () => {
       </nav>
       <div className="flex items-center space-x-8">
         <NavRight />
-        <Button size="sm">{session ? "Logout" : "Login"}</Button>
+        {session ? (
+          <Logout />
+        ) : (
+          <Button asChild>
+            <Link href="/login">Login</Link>
+          </Button>
+        )}
       </div>
     </header>
   );
