@@ -2,10 +2,11 @@
 
 import { Button } from "@/components/ui/button";
 import { useAppSelector } from "@/lib/store/hooks";
+import { getItemTotal } from "@/lib/utils";
 import { ArrowRight, ShoppingCart } from "lucide-react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import CartItem from "./cart-item";
 
 const CartItems = () => {
@@ -20,6 +21,12 @@ const CartItems = () => {
   }, []);
 
   const cart = useAppSelector((state) => state.cart.cartItems);
+
+  const finalTotal = useMemo(() => {
+    return cart.reduce((acc, item) => {
+      return acc + item.qty * getItemTotal(item);
+    }, 0);
+  }, [cart]);
 
   if (!isClient) {
     return null;
@@ -48,7 +55,7 @@ const CartItems = () => {
         <CartItem key={cartItem.hash} item={cartItem} />
       ))}
       <div className="flex items-center justify-between">
-        <span className="text-xl font-bold">&#8377;{4000}</span>
+        <span className="text-xl font-bold">&#8377;{finalTotal}</span>
         <Button>
           Checkout
           <ArrowRight size={16} />

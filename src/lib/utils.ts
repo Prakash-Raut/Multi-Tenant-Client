@@ -16,7 +16,7 @@ export function hashTheItem(payload: CartItem): string {
   return hash;
 }
 
-export function getFromPrice(product: Product): number {
+export const getFromPrice = (product: Product): number => {
   const basePrice = Object.entries(product.priceConfiguration)
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     .filter(([key, value]) => {
@@ -29,4 +29,19 @@ export function getFromPrice(product: Product): number {
     }, 0);
 
   return basePrice;
-}
+};
+
+export const getItemTotal = (product: CartItem) => {
+  const toppingsTotal = product.chosenConfiguration.selectedToppings.reduce(
+    (acc, curr) => acc + curr.price,
+    0
+  );
+  const configTotal = Object.entries(
+    product.chosenConfiguration.priceConfiguration
+  ).reduce((acc, [key, value]) => {
+    const price = product.priceConfiguration[key].availableOptions[value];
+    return acc + price;
+  }, 0);
+
+  return toppingsTotal + configTotal;
+};
