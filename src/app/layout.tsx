@@ -27,7 +27,7 @@ export default function RootLayout({
         <body className={`${manrope.variable} antialiased`}>
           <Refresher>
             <Header />
-            <main className="container mx-auto flex flex-col items-center justify-between px-24 py-6">
+            <main className="container mx-auto flex flex-col items-center justify-between">
               {children}
             </main>
           </Refresher>

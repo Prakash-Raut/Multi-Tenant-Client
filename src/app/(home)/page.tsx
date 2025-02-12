@@ -11,7 +11,7 @@ type HomeProps = {
 export default function Home({ searchParams }: HomeProps) {
   return (
     <>
-      <section className="flex w-full items-center justify-between">
+      <section className="flex w-full items-center justify-between px-24 py-6">
         <div>
           <h1 className="leading-2 text-7xl font-black">
             Delicious Pizza in <br />
