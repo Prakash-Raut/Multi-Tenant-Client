@@ -1,6 +1,13 @@
 "use client";
 
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import {
   Form,
   FormControl,
@@ -10,6 +17,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Textarea } from "@/components/ui/textarea";
 import { getCustomer } from "@/lib/http/api";
@@ -17,40 +25,15 @@ import { Address, Customer } from "@/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useQuery } from "@tanstack/react-query";
 import { Coins, CreditCard } from "lucide-react";
-import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { AddressModal } from "./address-modal";
 
-const formSchema = z.object({
-  firstName: z
-    .string()
-    .min(2, {
-      message: "Firstname must be at least 2 characters.",
-    })
-    .max(30, {
-      message: "Firstname must be less than 30 characters.",
-    }),
-  lastName: z
-    .string()
-    .min(2, {
-      message: "Lastname must be at least 2 characters.",
-    })
-    .max(30, {
-      message: "Lastname must be less than 30 characters.",
-    }),
-  email: z.string().email({
-    message: "Invalid email address.",
+const customerSchema = z.object({
+  address: z.string({ required_error: "Address is required." }),
+  paymentMode: z.enum(["card", "cash"], {
+    required_error: "You must select a payment mode.",
   }),
-  address: z
-    .string()
-    .min(5, {
-      message: "Address must be at least 5 characters.",
-    })
-    .max(100, {
-      message: "Address must be less than 100 characters.",
-    }),
-  paymentMode: z.enum(["card", "cash"]),
   comment: z.string().max(200, {
     message: "Comment must be less than 200 characters.",
   }),
@@ -65,85 +48,55 @@ const CustomerDetail = () => {
     },
   });
 
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<z.infer<typeof customerSchema>>({
+    resolver: zodResolver(customerSchema),
     defaultValues: {
-      firstName: customer?.firstName ?? "",
-      lastName: customer?.lastName ?? "",
-      email: customer?.email ?? "",
       address: "",
       paymentMode: "card",
       comment: "",
     },
   });
 
-  useEffect(() => {
-    if (customer) {
-      form.reset({
-        firstName: customer.firstName ?? "",
-        lastName: customer.lastName ?? "",
-        email: customer.email ?? "",
-        address: "",
-      });
-    }
-  }, [customer, form]);
-
-  function onSubmit(values: z.infer<typeof formSchema>) {
+  function onSubmit(values: z.infer<typeof customerSchema>) {
     console.log(values);
   }
 
   return (
-    <Card className="w-full max-w-2xl">
-      <CardHeader>
-        <CardTitle>Customer Details</CardTitle>
-      </CardHeader>
-      <CardContent>
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-            <FormField
-              control={form.control}
-              name="firstName"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>First Name</FormLabel>
-                  <FormControl>
-                    <Input placeholder="first name" {...field} disabled />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="lastName"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Last Name</FormLabel>
-                  <FormControl>
-                    <Input placeholder="last name" {...field} disabled />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="email"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Email</FormLabel>
-                  <FormControl>
-                    <Input
-                      type="email"
-                      placeholder="email"
-                      {...field}
-                      disabled
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+    <Form {...form}>
+      <form
+        onSubmit={form.handleSubmit(onSubmit)}
+        className="flex w-full items-start justify-between"
+      >
+        <Card className="w-full max-w-2xl">
+          <CardHeader>
+            <CardTitle>Customer Details</CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div className="space-y-2">
+              <Label>First Name</Label>
+              <Input
+                placeholder="first name"
+                defaultValue={customer?.firstName}
+                disabled
+              />
+            </div>
+            <div className="space-y-2">
+              <Label>Last Name</Label>
+              <Input
+                placeholder="last name"
+                defaultValue={customer?.lastName}
+                disabled
+              />
+            </div>
+            <div className="space-y-2">
+              <Label>Email</Label>
+              <Input
+                type="email"
+                placeholder="email"
+                defaultValue={customer?.email}
+                disabled
+              />
+            </div>
             <FormField
               control={form.control}
               name="address"
@@ -249,10 +202,46 @@ const CustomerDetail = () => {
                 </FormItem>
               )}
             />
-          </form>
-        </Form>
-      </CardContent>
-    </Card>
+          </CardContent>
+        </Card>
+        <Card className="w-full max-w-md">
+          <CardHeader>
+            <CardTitle>Order Summary</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="flex justify-between">
+              <p>Sub Total</p>
+              <span>{100}</span>
+            </div>
+            <div className="flex justify-between">
+              <p>Taxes</p>
+              <span>{100}</span>
+            </div>
+            <div className="flex justify-between">
+              <p>Delivery Charges</p>
+              <span>{100}</span>
+            </div>
+            <div className="flex justify-between">
+              <p>Discount</p>
+              <span>{100}</span>
+            </div>
+          </CardContent>
+          <CardFooter className="flex flex-col space-y-2">
+            <div className="flex w-full items-center justify-between">
+              <p>Order Total</p>
+              <span>{100}</span>
+            </div>
+            <div className="flex w-full items-center justify-between space-x-2">
+              <Input type="text" placeholder="Coupon Code" />
+              <Button variant="secondary">Apply</Button>
+            </div>
+            <div className="flex w-full items-center justify-end">
+              <Button type="submit">Place Order</Button>
+            </div>
+          </CardFooter>
+        </Card>
+      </form>
+    </Form>
   );
 };
 
