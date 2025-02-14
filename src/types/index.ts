@@ -73,3 +73,8 @@ export type Address = {
   text: string;
   isDefault: boolean;
 };
+
+export type CouponCodeData = {
+  code: string;
+  tenantId: number;
+};

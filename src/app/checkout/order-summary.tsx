@@ -7,17 +7,30 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import { verifyCoupon } from "@/lib/http/api";
 import { useAppSelector } from "@/lib/store/hooks";
 import { getItemTotal } from "@/lib/utils";
-import { useMemo, useState } from "react";
+import { CouponCodeData } from "@/types";
+import { useMutation } from "@tanstack/react-query";
+import axios from "axios";
+import { Loader2 } from "lucide-react";
+import { useSearchParams } from "next/navigation";
+import { useMemo, useRef, useState } from "react";
 
 const OrderSummary = () => {
+  const searchParams = useSearchParams();
+  const restaurantId = searchParams.get("restaurantId");
+
   const cart = useAppSelector((state) => state.cart.cartItems);
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [discountPercentage, setDiscountPercentage] = useState(10);
+  const [discountPercentage, setDiscountPercentage] = useState(0);
+
+  const [discountError, setDiscountError] = useState<string | null>(null);
+
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [taxesPercentage, setTaxesPercentage] = useState(18);
+
+  const couponCodeRef = useRef<HTMLInputElement>(null);
 
   const subTotal = useMemo(() => {
     return cart.reduce((acc, curr) => {
@@ -39,9 +52,58 @@ const OrderSummary = () => {
     return 100;
   }, []);
 
-  const grandTotal = useMemo(() => {
+  const grandTotalWithDiscount = useMemo(() => {
     return subTotal - discountTotal + taxesTotal + deliveryCharges;
   }, [subTotal, discountTotal, taxesTotal, deliveryCharges]);
+
+  const grandTotalWithoutDiscount = useMemo(() => {
+    return subTotal + taxesTotal + deliveryCharges;
+  }, [subTotal, taxesTotal, deliveryCharges]);
+
+  const { mutate: couponMutate, isPending } = useMutation({
+    mutationKey: ["couponCode"],
+    mutationFn: async () => {
+      if (!couponCodeRef.current) {
+        return;
+      }
+
+      if (!restaurantId) {
+        return;
+      }
+
+      const couponCodeData: CouponCodeData = {
+        code: couponCodeRef.current.value,
+        tenantId: +restaurantId,
+      };
+      const { data } = await verifyCoupon(couponCodeData);
+      console.log("Data", data);
+      return data;
+    },
+    onSuccess: (data) => {
+      console.log("Coupon Applied", data);
+
+      if (data.valid) {
+        setDiscountPercentage(data.discount);
+        return;
+      }
+
+      setDiscountPercentage(0);
+    },
+    onError: (error) => {
+      if (axios.isAxiosError(error) && error.response) {
+        const errorMsg = error.response.data.errors[0].msg;
+        setDiscountError(errorMsg);
+      } else {
+        setDiscountError("An unexpected error occurred");
+      }
+      setDiscountPercentage(0);
+    },
+  });
+
+  const handleCouponValidation = (e: React.MouseEvent) => {
+    e.preventDefault();
+    couponMutate();
+  };
 
   return (
     <Card className="w-full max-w-md">
@@ -69,11 +131,45 @@ const OrderSummary = () => {
       <CardFooter className="flex flex-col space-y-2">
         <div className="flex w-full items-center justify-between">
           <span className="font-bold">Order Total</span>
-          <span className="font-bold">&#8377;{grandTotal}</span>
+          <span className="flex flex-col items-center font-bold">
+            <span
+              className={discountPercentage ? "text-gray-500 line-through" : ""}
+            >
+              {" "}
+              &#8377;{grandTotalWithoutDiscount}
+            </span>
+            {discountPercentage ? (
+              <span className="text-green-500">
+                &#8377;{grandTotalWithDiscount}
+              </span>
+            ) : null}
+          </span>
         </div>
+        {discountError && (
+          <span className="text-sm text-red-500">{discountError}</span>
+        )}
         <div className="flex w-full items-center justify-between space-x-2">
-          <Input type="text" placeholder="Coupon Code" />
-          <Button variant="secondary">Apply</Button>
+          <Input
+            id="coupon"
+            name="code"
+            type="text"
+            placeholder="Coupon Code"
+            ref={couponCodeRef}
+          />
+          <Button
+            variant="secondary"
+            onClick={handleCouponValidation}
+            disabled={isPending}
+          >
+            {isPending ? (
+              <>
+                <Loader2 className="animate-spin" />
+                <span>Validating</span>
+              </>
+            ) : (
+              "Apply"
+            )}
+          </Button>
         </div>
         <div className="flex w-full items-center justify-end">
           <Button>Place Order</Button>
