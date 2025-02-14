@@ -1,13 +1,6 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Form,
   FormControl,
@@ -28,6 +21,7 @@ import { Coins, CreditCard } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { AddressModal } from "./address-modal";
+import OrderSummary from "./order-summary";
 
 const customerSchema = z.object({
   address: z.string({ required_error: "Address is required." }),
@@ -204,42 +198,7 @@ const CustomerDetail = () => {
             />
           </CardContent>
         </Card>
-        <Card className="w-full max-w-md">
-          <CardHeader>
-            <CardTitle>Order Summary</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="flex justify-between">
-              <p>Sub Total</p>
-              <span>{100}</span>
-            </div>
-            <div className="flex justify-between">
-              <p>Taxes</p>
-              <span>{100}</span>
-            </div>
-            <div className="flex justify-between">
-              <p>Delivery Charges</p>
-              <span>{100}</span>
-            </div>
-            <div className="flex justify-between">
-              <p>Discount</p>
-              <span>{100}</span>
-            </div>
-          </CardContent>
-          <CardFooter className="flex flex-col space-y-2">
-            <div className="flex w-full items-center justify-between">
-              <p>Order Total</p>
-              <span>{100}</span>
-            </div>
-            <div className="flex w-full items-center justify-between space-x-2">
-              <Input type="text" placeholder="Coupon Code" />
-              <Button variant="secondary">Apply</Button>
-            </div>
-            <div className="flex w-full items-center justify-end">
-              <Button type="submit">Place Order</Button>
-            </div>
-          </CardFooter>
-        </Card>
+        <OrderSummary />
       </form>
     </Form>
   );
