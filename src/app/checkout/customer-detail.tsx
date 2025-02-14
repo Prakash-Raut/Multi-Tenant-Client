@@ -12,8 +12,11 @@ import {
 import { Input } from "@/components/ui/input";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Textarea } from "@/components/ui/textarea";
+import { getCustomer } from "@/lib/http/api";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useQuery } from "@tanstack/react-query";
 import { Coins, CreditCard } from "lucide-react";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
@@ -52,17 +55,36 @@ const formSchema = z.object({
 });
 
 const CustomerDetail = () => {
+  const { data: customer } = useQuery({
+    queryKey: ["customer"],
+    queryFn: async () => {
+      const { data } = await getCustomer();
+      return data;
+    },
+  });
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      firstName: "",
-      lastName: "",
-      email: "",
+      firstName: customer?.firstName ?? "",
+      lastName: customer?.lastName ?? "",
+      email: customer?.email ?? "",
       address: "",
       paymentMode: "card",
       comment: "",
     },
   });
+
+  useEffect(() => {
+    if (customer) {
+      form.reset({
+        firstName: customer?.firstName ?? "",
+        lastName: customer?.lastName ?? "",
+        email: customer?.email ?? "",
+        address: "",
+      });
+    }
+  }, [customer, form]);
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     console.log(values);
@@ -83,7 +105,7 @@ const CustomerDetail = () => {
                 <FormItem>
                   <FormLabel>First Name</FormLabel>
                   <FormControl>
-                    <Input placeholder="first name" {...field} />
+                    <Input placeholder="first name" {...field} disabled />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -96,7 +118,7 @@ const CustomerDetail = () => {
                 <FormItem>
                   <FormLabel>Last Name</FormLabel>
                   <FormControl>
-                    <Input placeholder="last name" {...field} />
+                    <Input placeholder="last name" {...field} disabled />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -109,7 +131,12 @@ const CustomerDetail = () => {
                 <FormItem>
                   <FormLabel>Email</FormLabel>
                   <FormControl>
-                    <Input type="email" placeholder="email" {...field} />
+                    <Input
+                      type="email"
+                      placeholder="email"
+                      {...field}
+                      disabled
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
