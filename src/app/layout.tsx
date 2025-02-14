@@ -4,6 +4,7 @@ import { Toaster } from "@/components/ui/sonner";
 import type { Metadata } from "next";
 import { Manrope } from "next/font/google";
 import "./globals.css";
+import QueryProvider from "./providers/QueryProvider";
 import StoreProvider from "./providers/StoreProvider";
 
 const manrope = Manrope({
@@ -25,12 +26,14 @@ export default function RootLayout({
     <html lang="en">
       <StoreProvider>
         <body className={`${manrope.variable} antialiased`}>
-          <Refresher>
-            <Header />
-            <main className="container mx-auto flex flex-col items-center justify-between">
-              {children}
-            </main>
-          </Refresher>
+          <QueryProvider>
+            <Refresher>
+              <Header />
+              <main className="container mx-auto flex flex-col items-center justify-between">
+                {children}
+              </main>
+            </Refresher>
+          </QueryProvider>
           <Toaster richColors />
         </body>
       </StoreProvider>
