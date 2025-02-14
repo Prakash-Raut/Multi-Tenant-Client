@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
 import { Loader2 } from "lucide-react";
+import { useSearchParams } from "next/navigation";
 import { useActionState } from "react";
 
 const initialState = {
@@ -17,10 +18,13 @@ export const LoginForm = ({
   className,
   ...props
 }: React.ComponentPropsWithoutRef<"form">) => {
+  const searchParams = useSearchParams();
+  const returnTo = searchParams.get("return-to");
+
   const [state, formAction, pending] = useActionState(login, initialState);
 
   if (state?.type === "success") {
-    window.location.href = "/";
+    window.location.href = returnTo ? returnTo : "/";
   }
 
   return (

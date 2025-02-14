@@ -12,10 +12,13 @@ const CheckoutPage = async ({
   const session = await getSession();
 
   const sanitized = sanitizeParams(searchParams);
-  const queryString = new URLSearchParams(sanitized).toString();
+  const sParams = new URLSearchParams(sanitized);
+  const existingQueryString = sParams.toString();
+
+  sParams.append("return-to", `/checkout?${existingQueryString}`);
 
   if (!session) {
-    return redirect(`/login?${queryString}`);
+    return redirect(`/login?${sParams}`);
   }
 
   return (
