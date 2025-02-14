@@ -20,6 +20,7 @@ import { Coins, CreditCard } from "lucide-react";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import { AddressModal } from "./address-modal";
 
 const formSchema = z.object({
   firstName: z
@@ -148,12 +149,15 @@ const CustomerDetail = () => {
               name="address"
               render={({ field }) => (
                 <FormItem className="space-y-3">
-                  <FormLabel>Address</FormLabel>
+                  <div className="flex items-center justify-between">
+                    <FormLabel>Address</FormLabel>
+                    <AddressModal customerId={customer?._id ?? ""} />
+                  </div>
                   <FormControl>
                     <RadioGroup
                       onValueChange={field.onChange}
                       defaultValue={field.value}
-                      className="flex flex-col space-y-1"
+                      className="grid grid-cols-2 gap-4"
                     >
                       {customer?.addresses.map((address: Address) => (
                         <FormItem

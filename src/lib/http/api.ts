@@ -14,3 +14,8 @@ const api = axios.create({
 export const ORDER_SERVICE = "/api/order";
 
 export const getCustomer = () => api.get(`${ORDER_SERVICE}/customers`);
+
+export const addAddress = (customerId: string, address: string) =>
+  api.patch(`${ORDER_SERVICE}/customers/addresses/${customerId}`, {
+    address,
+  });
