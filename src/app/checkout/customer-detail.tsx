@@ -13,6 +13,7 @@ import { Input } from "@/components/ui/input";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Textarea } from "@/components/ui/textarea";
 import { getCustomer } from "@/lib/http/api";
+import { Address, Customer } from "@/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useQuery } from "@tanstack/react-query";
 import { Coins, CreditCard } from "lucide-react";
@@ -55,7 +56,7 @@ const formSchema = z.object({
 });
 
 const CustomerDetail = () => {
-  const { data: customer } = useQuery({
+  const { data: customer } = useQuery<Customer>({
     queryKey: ["customer"],
     queryFn: async () => {
       const { data } = await getCustomer();
@@ -78,9 +79,9 @@ const CustomerDetail = () => {
   useEffect(() => {
     if (customer) {
       form.reset({
-        firstName: customer?.firstName ?? "",
-        lastName: customer?.lastName ?? "",
-        email: customer?.email ?? "",
+        firstName: customer.firstName ?? "",
+        lastName: customer.lastName ?? "",
+        email: customer.email ?? "",
         address: "",
       });
     }
@@ -154,14 +155,21 @@ const CustomerDetail = () => {
                       defaultValue={field.value}
                       className="flex flex-col space-y-1"
                     >
-                      <FormItem className="flex items-center space-x-3 space-y-0">
-                        <FormControl>
-                          <RadioGroupItem value="all" />
-                        </FormControl>
-                        <FormLabel className="font-normal">
-                          All new messages
-                        </FormLabel>
-                      </FormItem>
+                      {customer?.addresses.map((address: Address) => (
+                        <FormItem
+                          key={address.text}
+                          className="flex items-center space-x-3 space-y-0"
+                        >
+                          <Card>
+                            <CardContent className="flex items-center space-x-2 p-4">
+                              <FormControl>
+                                <RadioGroupItem value={address.text} />
+                              </FormControl>
+                              <FormLabel>{address.text}</FormLabel>
+                            </CardContent>
+                          </Card>
+                        </FormItem>
+                      ))}
                     </RadioGroup>
                   </FormControl>
                   <FormMessage />

@@ -60,3 +60,16 @@ export interface Topping {
   tenantId: string;
   isPublish: boolean;
 }
+
+export type Customer = {
+  _id: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  addresses: Address[];
+};
+
+export type Address = {
+  text: string;
+  isDefault: boolean;
+};
