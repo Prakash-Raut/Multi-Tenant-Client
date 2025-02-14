@@ -45,3 +45,19 @@ export const getItemTotal = (product: CartItem) => {
 
   return toppingsTotal + configTotal;
 };
+
+/**
+ * Sanitizes searchParams by ensuring all values are strings.
+ * - Converts `Symbol` values to an empty string (`""`).
+ * - Replaces `null` and `undefined` with an empty string.
+ */
+export const sanitizeParams = (
+  params: Record<string, unknown>
+): Record<string, string> => {
+  return Object.fromEntries(
+    Object.entries(params).map(([key, value]) => [
+      key,
+      typeof value === "symbol" ? "" : String(value ?? ""),
+    ])
+  );
+};
