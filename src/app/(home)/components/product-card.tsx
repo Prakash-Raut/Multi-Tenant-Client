@@ -16,7 +16,7 @@ const ProductCard = ({ product }: PropTypes) => {
     <Card className="rounded-2xl border-none">
       <CardHeader className="flex items-center justify-center">
         <Image
-          src={"/pizza-main.png"}
+          src={product.image}
           alt={product.name}
           width={150}
           height={150}

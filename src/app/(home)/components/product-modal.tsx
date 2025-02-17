@@ -136,8 +136,7 @@ const ProductModal = ({ product }: { product: Product }) => {
         <div className="flex items-center justify-between gap-4">
           <div className="w-1/3">
             <Image
-              // src={product.image}
-              src={"/pizza-main.png"}
+              src={product.image}
               alt={product.name}
               width={450}
               height={450}

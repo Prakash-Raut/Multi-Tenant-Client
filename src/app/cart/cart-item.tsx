@@ -15,12 +15,7 @@ const CartItem = ({ item }: { item: Item }) => {
   return (
     <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
       <div className="flex w-3/4 items-center">
-        <Image
-          src={"/pizza-main.png"}
-          alt={item.name}
-          width={100}
-          height={100}
-        />
+        <Image src={item.image} alt={item.name} width={100} height={100} />
         <div className="ml-6 flex w-full gap-12">
           <div className="flex-1">
             <h2 className="font-bold">{item.name}</h2>
