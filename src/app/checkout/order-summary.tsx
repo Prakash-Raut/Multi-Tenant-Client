@@ -19,8 +19,10 @@ import { useMemo, useRef, useState } from "react";
 
 const OrderSummary = ({
   handleCouponCodeChange,
+  isPlaceOrderPending,
 }: {
   handleCouponCodeChange: (code: string) => void;
+  isPlaceOrderPending: boolean;
 }) => {
   const searchParams = useSearchParams();
   const restaurantId = searchParams.get("restaurantId");
@@ -179,7 +181,16 @@ const OrderSummary = ({
           </Button>
         </div>
         <div className="flex w-full items-center justify-end">
-          <Button>Place Order</Button>
+          <Button disabled={isPlaceOrderPending}>
+            {isPlaceOrderPending ? (
+              <>
+                <Loader2 className="animate-spin" />
+                <span>Placing Order</span>
+              </>
+            ) : (
+              "Place Order"
+            )}
+          </Button>
         </div>
       </CardFooter>
     </Card>

@@ -65,17 +65,18 @@ const CustomerDetail = () => {
 
   const cart = useAppSelector((state) => state.cart);
 
-  const { mutate: createOrderMutate } = useMutation({
-    mutationKey: ["createNewOrder"],
-    mutationFn: async (data: OrderData) => {
-      const idempotencyKey = idempotencyKeyRef.current
-        ? idempotencyKeyRef.current
-        : (idempotencyKeyRef.current = uuidv4() + customer?._id);
+  const { mutate: createOrderMutate, isPending: isPlaceOrderPending } =
+    useMutation({
+      mutationKey: ["createNewOrder"],
+      mutationFn: async (data: OrderData) => {
+        const idempotencyKey = idempotencyKeyRef.current
+          ? idempotencyKeyRef.current
+          : (idempotencyKeyRef.current = uuidv4() + customer?._id);
 
-      await createOrder(data, idempotencyKey);
-    },
-    retry: 3,
-  });
+        await createOrder(data, idempotencyKey);
+      },
+      retry: 3,
+    });
 
   function handlePlaceOrder(values: z.infer<typeof customerSchema>) {
     if (!restaurantId) {
@@ -246,6 +247,7 @@ const CustomerDetail = () => {
         </Card>
         <OrderSummary
           handleCouponCodeChange={(code) => (appliedCouponCode.current = code)}
+          isPlaceOrderPending={isPlaceOrderPending}
         />
       </form>
     </Form>
