@@ -18,9 +18,10 @@ const PaymentPage = async ({
   searchParams: {
     success: string;
     orderId: string;
+    restaurantId: string;
   };
 }) => {
-  const { success, orderId } = await searchParams;
+  const { success, orderId, restaurantId } = await searchParams;
 
   const isOrderSucess = success === "true";
 
@@ -70,9 +71,8 @@ const PaymentPage = async ({
                 Order Refrence:
               </h2>
               <Link
-                href={`/order-status/${orderId}`}
+                href={`/order-status/${orderId}?restaurantId=${restaurantId}`}
                 className="underline"
-                passHref
               >
                 {orderId}
               </Link>
@@ -90,7 +90,7 @@ const PaymentPage = async ({
 
       {isOrderSucess ? (
         <Button asChild>
-          <Link href={`/order-status/${orderId}`} passHref>
+          <Link href={`/order-status/${orderId}?restaurantId=${restaurantId}`}>
             <ArrowLeft size={20} />
             Check Order Status
           </Link>
@@ -98,7 +98,7 @@ const PaymentPage = async ({
       ) : (
         <Button asChild>
           {/* TODO: GET tenantId from the redirect url BACKEND */}
-          <Link href={`/checkout`} passHref>
+          <Link href={`/checkout?restaurantId=${restaurantId}`} passHref>
             <ArrowLeft size={20} />
             Go Back to Checkout
           </Link>
