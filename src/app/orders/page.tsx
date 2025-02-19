@@ -15,8 +15,29 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-
+import { api } from "@/lib/config";
+import { Order } from "@/types";
+import { cookies } from "next/headers";
 import Link from "next/link";
+
+const fetchOrders = async () => {
+  const cookieStore = await cookies();
+  const accessToken = cookieStore.get("accessToken")?.value;
+  console.log("Access Token", accessToken);
+  const response = await fetch(`${api}/api/order/orders/me`, {
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error("Failed to fetch orders");
+  }
+
+  const orders: Order[] = await response.json();
+
+  return orders;
+};
 
 const OrderPage = async ({
   searchParams,
@@ -25,6 +46,9 @@ const OrderPage = async ({
 }) => {
   const { restaurantId } = await searchParams;
   console.log(restaurantId);
+
+  const orders = await fetchOrders();
+
   return (
     <section>
       <Card>
@@ -49,24 +73,30 @@ const OrderPage = async ({
               </TableRow>
             </TableHeader>
             <TableBody>
-              <TableRow>
-                <TableCell className="font-medium">INV001</TableCell>
-                <TableCell>Paid</TableCell>
-                <TableCell>Credit Card</TableCell>
-                <TableCell>
-                  {new Date().toLocaleDateString()}{" "}
-                  {new Date().toLocaleTimeString()}
-                </TableCell>
-                <TableCell>
-                  <Badge variant="secondary">Completed</Badge>
-                </TableCell>
-                <TableCell>$250.00</TableCell>
-                <TableCell className="text-right">
-                  <Link href={`/`} className="text-primary underline">
-                    More Details
-                  </Link>
-                </TableCell>
-              </TableRow>
+              {orders.map((order) => (
+                <TableRow key={order._id}>
+                  <TableCell className="font-medium">{order._id}</TableCell>
+                  <TableCell className="uppercase">
+                    <Badge variant="secondary">{order.paymentStatus}</Badge>
+                  </TableCell>
+                  <TableCell className="capitalize">
+                    {order.paymentMode}
+                  </TableCell>
+                  <TableCell>{order.createdAt}</TableCell>
+                  <TableCell className="uppercase">
+                    <Badge variant="secondary">{order.orderStatus}</Badge>
+                  </TableCell>
+                  <TableCell>&#8377;{order.total}</TableCell>
+                  <TableCell className="text-right">
+                    <Link
+                      href={`/order/${order._id}`}
+                      className="text-primary underline"
+                    >
+                      More Details
+                    </Link>
+                  </TableCell>
+                </TableRow>
+              ))}
             </TableBody>
           </Table>
         </CardContent>

@@ -81,7 +81,25 @@ export type CouponCodeData = {
   tenantId: number;
 };
 
-type PaymentMode = "card" | "cash";
+export enum PaymentMode {
+  CARD = "card",
+  CASH = "cash",
+}
+
+export enum OrderStatus {
+  RECEIVED = "received",
+  CONFIRMED = "confirmed",
+  PREPARING = "preparing",
+  READY_FOR_DELIVERY = "ready_for_delivery",
+  OUT_FOR_DELIVERY = "out_for_delivery",
+  DELIVERED = "delivered",
+}
+
+export enum PaymentStatus {
+  PENDING = "pending",
+  PAID = "paid",
+  FAILED = "failed",
+}
 
 export type OrderData = {
   cart: CartItem[];
@@ -91,4 +109,23 @@ export type OrderData = {
   comment: string;
   address: string;
   paymentMode: PaymentMode;
+};
+
+export type Order = {
+  _id: string;
+  customerId: string;
+  total: number;
+  discount: number;
+  taxes: number;
+  deliveryCharges: number;
+  address: string;
+  tenantId: string;
+  comment: string;
+  paymentMode: PaymentMode;
+  orderStatus: OrderStatus;
+  paymentStatus: PaymentStatus;
+  paymentReference: string | null;
+  createdAt: string;
+  updatedAt: string;
+  __v: number;
 };
