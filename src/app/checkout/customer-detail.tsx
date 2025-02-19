@@ -68,14 +68,25 @@ const CustomerDetail = () => {
   const { mutate: createOrderMutate, isPending: isPlaceOrderPending } =
     useMutation({
       mutationKey: ["createNewOrder"],
-      mutationFn: async (data: OrderData) => {
+      mutationFn: async (orderData: OrderData) => {
         const idempotencyKey = idempotencyKeyRef.current
           ? idempotencyKeyRef.current
           : (idempotencyKeyRef.current = uuidv4() + customer?._id);
 
-        await createOrder(data, idempotencyKey);
+        const { data } = await createOrder(orderData, idempotencyKey);
+        return data;
       },
       retry: 3,
+      onSuccess: (data: { paymentUrl: string | null }) => {
+        if (data.paymentUrl) {
+          window.location.href = data.paymentUrl;
+        }
+
+        alert("Order placed successfully");
+
+        // TODO: THIS WILL HAPPEN WHEN PAYMENT MODE IS CASH
+        // clear cart, redirect user to order status page
+      },
     });
 
   function handlePlaceOrder(values: z.infer<typeof customerSchema>) {
