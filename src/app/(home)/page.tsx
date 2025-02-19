@@ -4,11 +4,11 @@ import { Suspense } from "react";
 import FallBackSkeleton from "./components/fallback-skeleton";
 import ProductList from "./components/product-list";
 
-type HomeProps = {
+export default function Home({
+  searchParams,
+}: {
   searchParams: { restaurantId: string };
-};
-
-export default function Home({ searchParams }: HomeProps) {
+}) {
   return (
     <>
       <section className="flex w-full items-center justify-between px-24 py-6">

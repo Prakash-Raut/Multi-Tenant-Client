@@ -3,12 +3,13 @@ import { api } from "@/lib/config";
 import { Category, Product } from "@/types";
 import ProductCard from "./product-card";
 
-type ProductListProps = {
+const ProductList = async ({
+  searchParams,
+}: {
   searchParams: { restaurantId: string };
-};
+}) => {
+  const { restaurantId } = await searchParams;
 
-const ProductList = async ({ searchParams }: ProductListProps) => {
-  const { restaurantId } = searchParams;
   // TODO: Make TenantId Dynamic
   const [categoryResponse, productResponse] = await Promise.all([
     fetch(`${api}/api/catalog/categories?perPage=100&currentPage=1`, {
