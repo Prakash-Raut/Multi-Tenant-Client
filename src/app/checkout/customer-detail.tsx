@@ -1,5 +1,7 @@
 "use client";
 
+import { v4 as uuidv4 } from "uuid";
+
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Form,
@@ -13,11 +15,11 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Textarea } from "@/components/ui/textarea";
-import { getCustomer } from "@/lib/http/api";
+import { createOrder, getCustomer } from "@/lib/http/api";
 import { useAppSelector } from "@/lib/store/hooks";
-import { Address, Customer } from "@/types";
+import { Address, Customer, OrderData } from "@/types";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { Coins, CreditCard } from "lucide-react";
 import { useSearchParams } from "next/navigation";
 import { useRef } from "react";
@@ -59,18 +61,34 @@ const CustomerDetail = () => {
   });
 
   const appliedCouponCode = useRef<string>("");
+  const idempotencyKeyRef = useRef<string>("");
 
   const cart = useAppSelector((state) => state.cart);
 
-  function handlePlaceOrder(values: z.infer<typeof customerSchema>) {
-    console.log(values);
+  const { mutate: createOrderMutate } = useMutation({
+    mutationKey: ["createNewOrder"],
+    mutationFn: async (data: OrderData) => {
+      const idempotencyKey = idempotencyKeyRef.current
+        ? idempotencyKeyRef.current
+        : (idempotencyKeyRef.current = uuidv4() + customer?._id);
 
+      await createOrder(data, idempotencyKey);
+    },
+    retry: 3,
+  });
+
+  function handlePlaceOrder(values: z.infer<typeof customerSchema>) {
     if (!restaurantId) {
       alert("Please choose a restaurant");
       return;
     }
 
-    const orderData = {
+    if (!customer) {
+      alert("Please login to continue");
+      return;
+    }
+
+    const orderData: OrderData = {
       cart: cart.cartItems,
       couponCode: appliedCouponCode.current ? appliedCouponCode.current : "",
       tenantId: restaurantId,
@@ -80,7 +98,7 @@ const CustomerDetail = () => {
       paymentMode: values.paymentMode,
     };
 
-    console.log("Order Data", orderData);
+    createOrderMutate(orderData);
   }
 
   return (
