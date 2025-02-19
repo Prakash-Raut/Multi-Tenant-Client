@@ -17,6 +17,7 @@ import {
 } from "@/components/ui/table";
 import { api } from "@/lib/config";
 import { Order } from "@/types";
+import { format } from "date-fns";
 import { cookies } from "next/headers";
 import Link from "next/link";
 
@@ -34,7 +35,7 @@ const fetchOrders = async () => {
     throw new Error("Failed to fetch orders");
   }
 
-  const orders: Order[] = await response.json();
+  const orders: Order[] = (await response.json()) || [];
 
   return orders;
 };
@@ -73,30 +74,37 @@ const OrderPage = async ({
               </TableRow>
             </TableHeader>
             <TableBody>
-              {orders.map((order) => (
-                <TableRow key={order._id}>
-                  <TableCell className="font-medium">{order._id}</TableCell>
-                  <TableCell className="uppercase">
-                    <Badge variant="secondary">{order.paymentStatus}</Badge>
-                  </TableCell>
-                  <TableCell className="capitalize">
-                    {order.paymentMode}
-                  </TableCell>
-                  <TableCell>{order.createdAt}</TableCell>
-                  <TableCell className="uppercase">
-                    <Badge variant="secondary">{order.orderStatus}</Badge>
-                  </TableCell>
-                  <TableCell>&#8377;{order.total}</TableCell>
-                  <TableCell className="text-right">
-                    <Link
-                      href={`/order/${order._id}`}
-                      className="text-primary underline"
-                    >
-                      More Details
-                    </Link>
-                  </TableCell>
-                </TableRow>
-              ))}
+              {orders.length === 0
+                ? "No orders found"
+                : orders.map((order) => (
+                    <TableRow key={order._id}>
+                      <TableCell className="font-medium">{order._id}</TableCell>
+                      <TableCell className="uppercase">
+                        <Badge variant="secondary">{order.paymentStatus}</Badge>
+                      </TableCell>
+                      <TableCell className="capitalize">
+                        {order.paymentMode}
+                      </TableCell>
+                      <TableCell>
+                        {format(
+                          new Date(order.createdAt),
+                          "dd-MM-yyyy HH:mm:ss"
+                        )}
+                      </TableCell>
+                      <TableCell className="uppercase">
+                        <Badge variant="secondary">{order.orderStatus}</Badge>
+                      </TableCell>
+                      <TableCell>&#8377;{order.total}</TableCell>
+                      <TableCell className="text-right">
+                        <Link
+                          href={`/order/${order._id}`}
+                          className="text-primary underline"
+                        >
+                          More Details
+                        </Link>
+                      </TableCell>
+                    </TableRow>
+                  ))}
             </TableBody>
           </Table>
         </CardContent>
