@@ -1,7 +1,7 @@
 import { getSession } from "@/lib/session";
 import { sanitizeParams } from "@/lib/utils";
 import { redirect } from "next/navigation";
-import CustomerDetail from "./customer-detail";
+import CustomerDetail from "./components/customer-detail";
 
 const CheckoutPage = async ({
   searchParams,
