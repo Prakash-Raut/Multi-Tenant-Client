@@ -42,7 +42,7 @@ export const cartSlice = createSlice({
     },
     setInitialCartItems: (state, action: PayloadAction<CartItem[]>) => {
       if (Array.isArray(action.payload)) {
-        state.cartItems.push(...action.payload);
+        state.cartItems = [...action.payload];
       }
     },
     changeQty: (
