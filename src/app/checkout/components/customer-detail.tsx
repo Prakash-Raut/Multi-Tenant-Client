@@ -16,7 +16,8 @@ import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Textarea } from "@/components/ui/textarea";
 import { createOrder, getCustomer } from "@/lib/http/api";
-import { useAppSelector } from "@/lib/store/hooks";
+import { clearCart } from "@/lib/store/features/cart/cartSlice";
+import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
 import { Address, Customer, OrderData } from "@/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQuery } from "@tanstack/react-query";
@@ -64,6 +65,7 @@ const CustomerDetail = () => {
   const idempotencyKeyRef = useRef<string>("");
 
   const cart = useAppSelector((state) => state.cart);
+  const dispatch = useAppDispatch();
 
   const { mutate: createOrderMutate, isPending: isPlaceOrderPending } =
     useMutation({
@@ -83,6 +85,7 @@ const CustomerDetail = () => {
         }
 
         alert("Order placed successfully");
+        dispatch(clearCart());
 
         // TODO: THIS WILL HAPPEN WHEN PAYMENT MODE IS CASH
         // clear cart, redirect user to order status page
