@@ -14,10 +14,13 @@ import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Textarea } from "@/components/ui/textarea";
 import { getCustomer } from "@/lib/http/api";
+import { useAppSelector } from "@/lib/store/hooks";
 import { Address, Customer } from "@/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useQuery } from "@tanstack/react-query";
 import { Coins, CreditCard } from "lucide-react";
+import { useSearchParams } from "next/navigation";
+import { useRef } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { AddressModal } from "./address-modal";
@@ -34,6 +37,10 @@ const customerSchema = z.object({
 });
 
 const CustomerDetail = () => {
+  const searchParams = useSearchParams();
+
+  const restaurantId = searchParams.get("restaurantId");
+
   const { data: customer } = useQuery<Customer>({
     queryKey: ["customer"],
     queryFn: async () => {
@@ -51,14 +58,35 @@ const CustomerDetail = () => {
     },
   });
 
-  function onSubmit(values: z.infer<typeof customerSchema>) {
+  const appliedCouponCode = useRef<string>("");
+
+  const cart = useAppSelector((state) => state.cart);
+
+  function handlePlaceOrder(values: z.infer<typeof customerSchema>) {
     console.log(values);
+
+    if (!restaurantId) {
+      alert("Please choose a restaurant");
+      return;
+    }
+
+    const orderData = {
+      cart: cart.cartItems,
+      couponCode: appliedCouponCode.current ? appliedCouponCode.current : "",
+      tenantId: restaurantId,
+      customerId: customer?._id,
+      comment: values.comment,
+      address: values.address,
+      paymentMode: values.paymentMode,
+    };
+
+    console.log("Order Data", orderData);
   }
 
   return (
     <Form {...form}>
       <form
-        onSubmit={form.handleSubmit(onSubmit)}
+        onSubmit={form.handleSubmit(handlePlaceOrder)}
         className="flex w-full items-start justify-between"
       >
         <Card className="w-full max-w-2xl">
@@ -198,7 +226,9 @@ const CustomerDetail = () => {
             />
           </CardContent>
         </Card>
-        <OrderSummary />
+        <OrderSummary
+          handleCouponCodeChange={(code) => (appliedCouponCode.current = code)}
+        />
       </form>
     </Form>
   );

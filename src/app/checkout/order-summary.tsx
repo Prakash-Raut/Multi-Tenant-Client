@@ -17,7 +17,11 @@ import { Loader2 } from "lucide-react";
 import { useSearchParams } from "next/navigation";
 import { useMemo, useRef, useState } from "react";
 
-const OrderSummary = () => {
+const OrderSummary = ({
+  handleCouponCodeChange,
+}: {
+  handleCouponCodeChange: (code: string) => void;
+}) => {
   const searchParams = useSearchParams();
   const restaurantId = searchParams.get("restaurantId");
 
@@ -76,17 +80,20 @@ const OrderSummary = () => {
         tenantId: +restaurantId,
       };
       const { data } = await verifyCoupon(couponCodeData);
-      console.log("Data", data);
       return data;
     },
     onSuccess: (data) => {
-      console.log("Coupon Applied", data);
-
       if (data.valid) {
+        setDiscountError("");
+        handleCouponCodeChange(
+          couponCodeRef.current ? couponCodeRef.current.value : ""
+        );
         setDiscountPercentage(data.discount);
         return;
       }
 
+      setDiscountError("Invalid coupon code");
+      handleCouponCodeChange("");
       setDiscountPercentage(0);
     },
     onError: (error) => {

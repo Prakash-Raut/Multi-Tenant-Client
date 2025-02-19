@@ -58,7 +58,9 @@ const CartItems = () => {
       ))}
       <div className="flex items-center justify-between">
         <span className="text-xl font-bold">&#8377;{finalTotal}</span>
-        <Button onClick={() => router.push("/checkout")}>
+        <Button
+          onClick={() => router.push(`/checkout?restaurantId=${restaurantId}`)}
+        >
           Checkout
           <ArrowRight size={16} />
         </Button>
