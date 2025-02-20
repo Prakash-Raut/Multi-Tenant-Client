@@ -10,34 +10,35 @@ import {
   Package,
   PackageCheck,
 } from "lucide-react";
+import { useEffect, useState } from "react";
 
 const { Scoped, useStepper, steps } = defineStepper(
   {
-    id: "received",
+    id: "0",
     title: "Received",
     icon: FileCheck,
     description: "We are confirming your order",
   },
   {
-    id: "confirmed",
+    id: "1",
     title: "Confirmed",
     icon: Package,
     description: "We have started preparing your order",
   },
   {
-    id: "prepared",
+    id: "2",
     title: "Prepared",
     icon: Microwave,
     description: "Ready for pickup",
   },
   {
-    id: "outfordelivery",
+    id: "3",
     title: "Out For Delivery",
     icon: PackageCheck,
     description: "Order is out for delivery",
   },
   {
-    id: "delivered",
+    id: "4",
     title: "Delivered",
     icon: CheckCheck,
     description: "Order has been delivered",
@@ -46,14 +47,31 @@ const { Scoped, useStepper, steps } = defineStepper(
 
 const OrderStep = () => {
   const stepper = useStepper();
-  console.log("stepper", stepper);
-  const currentStep = "prepared";
-  const currentIndex = steps.findIndex((step) => step.id === currentStep);
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  useEffect(() => {
+    // increment the step every 2 seconds
+    const interval = setInterval(() => {
+      setCurrentIndex((prevIndex) => {
+        const nextIndex = prevIndex + 1;
+        if (nextIndex < steps.length) {
+          stepper.next();
+          return nextIndex;
+        } else {
+          clearInterval(interval);
+          return prevIndex;
+        }
+      });
+    }, 2000);
+
+    return () => clearInterval(interval);
+  }, [stepper]);
+
   return (
     <>
       <div className="flex items-center justify-between gap-40">
         {steps.map((step, index) => (
-          <Scoped key={index} initialStep={currentStep}>
+          <Scoped key={index} initialStep="0">
             <div className="flex items-center">
               <div
                 className={cn(
