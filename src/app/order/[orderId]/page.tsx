@@ -39,7 +39,6 @@ const OrderDetailPage = async ({ params }: { params: { orderId: string } }) => {
 
   const order = await fetchOrder(orderId);
 
-  console.log(order);
   return (
     <section className="flex flex-col space-y-6">
       <Card>
@@ -48,7 +47,7 @@ const OrderDetailPage = async ({ params }: { params: { orderId: string } }) => {
           <CardDescription>Track the order status</CardDescription>
         </CardHeader>
         <CardContent>
-          <OrderStep />
+          <OrderStep orderId={order._id} />
         </CardContent>
       </Card>
       <div className="flex items-start justify-center gap-6">

@@ -1,8 +1,11 @@
 "use client";
 
+import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
+import { getSingleOrder } from "@/lib/http/api";
 import { cn } from "@/lib/utils";
 import { defineStepper } from "@stepperize/react";
+import { useQuery } from "@tanstack/react-query";
 import {
   CheckCheck,
   FileCheck,
@@ -10,101 +13,123 @@ import {
   Package,
   PackageCheck,
 } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useRef } from "react";
 
-const { Scoped, useStepper, steps } = defineStepper(
+const { Scoped, useStepper, steps, utils } = defineStepper(
   {
-    id: "0",
+    id: "received",
     title: "Received",
     icon: FileCheck,
     description: "We are confirming your order",
   },
   {
-    id: "1",
+    id: "confirmed",
     title: "Confirmed",
     icon: Package,
     description: "We have started preparing your order",
   },
   {
-    id: "2",
+    id: "prepared",
     title: "Prepared",
     icon: Microwave,
     description: "Ready for pickup",
   },
   {
-    id: "3",
+    id: "out for delivery",
     title: "Out For Delivery",
     icon: PackageCheck,
     description: "Order is out for delivery",
   },
   {
-    id: "4",
+    id: "delivered",
     title: "Delivered",
     icon: CheckCheck,
     description: "Order has been delivered",
   }
 );
 
-const OrderStep = () => {
+const OrderStep = ({ orderId }: { orderId: string }) => {
   const stepper = useStepper();
-  const [currentIndex, setCurrentIndex] = useState(0);
+
+  const { data: orderData, isSuccess } = useQuery({
+    queryKey: ["order"],
+    queryFn: async () => {
+      const { data } = await getSingleOrder(orderId);
+      return data;
+    },
+    refetchInterval: 1000 * 30, // Refetch every 30 seconds
+  });
+
+  const currentIndex = useMemo(
+    () => utils.getIndex(stepper.current.id),
+    [stepper.current.id]
+  );
+
+  const prevOrderStatus = useRef(orderData?.orderStatus);
 
   useEffect(() => {
-    // increment the step every 2 seconds
-    const interval = setInterval(() => {
-      setCurrentIndex((prevIndex) => {
-        const nextIndex = prevIndex + 1;
-        if (nextIndex < steps.length) {
-          stepper.next();
-          return nextIndex;
-        } else {
-          clearInterval(interval);
-          return prevIndex;
-        }
-      });
-    }, 2000);
+    if (
+      isSuccess &&
+      orderData?.orderStatus &&
+      orderData.orderStatus !== prevOrderStatus.current
+    ) {
+      const currentIndex = utils.getIndex(stepper.current.id);
+      const nextStep = stepper.all[currentIndex + 1]?.id;
 
-    return () => clearInterval(interval);
-  }, [stepper]);
+      if (nextStep) {
+        stepper.goTo(nextStep);
+        prevOrderStatus.current = orderData.orderStatus; // Update the previous status
+      }
+    }
+  }, [isSuccess, orderData?.orderStatus, stepper]);
 
   return (
-    <>
-      <div className="flex items-center justify-between gap-40">
-        {steps.map((step, index) => (
-          <Scoped key={index} initialStep="0">
-            <div className="flex items-center">
-              <div
-                className={cn(
-                  "flex flex-col items-center gap-2",
-                  index <= currentIndex
-                    ? "font-bold text-primary" // Highlight current and previous steps
-                    : "text-gray-500"
-                )}
-              >
-                <step.icon
-                  size={32}
-                  className={cn(
-                    "transition-colors",
-                    index <= currentIndex
-                      ? "text-primary" // Change color for completed steps
-                      : "text-gray-400"
-                  )}
-                />
-                <span>{step.title}</span>
-              </div>
-              {index < steps.length - 1 && (
+    <nav aria-label="Checkout Steps" className="group my-4">
+      <ol
+        className="flex items-baseline justify-between gap-2"
+        aria-orientation="horizontal"
+      >
+        {stepper.all.map((step, index, array) => {
+          // Determine button variant for each step
+          const variant =
+            index < currentIndex
+              ? "default" // Completed steps
+              : index === currentIndex
+                ? "outline" // Current step
+                : "secondary"; // Pending steps
+          return (
+            <Scoped key={index}>
+              <li className="flex flex-col items-center gap-4">
+                <Button
+                  type="button"
+                  role="tab"
+                  variant={variant}
+                  aria-current={
+                    stepper.current.id === step.id ? "step" : undefined
+                  }
+                  aria-posinset={index + 1}
+                  aria-setsize={steps.length}
+                  aria-selected={stepper.current.id === step.id}
+                  className="flex size-10 items-center justify-center rounded-full"
+                  onClick={() => stepper.goTo(step.id)}
+                >
+                  <step.icon size={20} />
+                </Button>
+                <span className="text-sm font-medium">{step.title}</span>
+              </li>
+              {index < array.length - 1 && (
                 <Separator
                   className={cn(
-                    "mx-4 h-0.5 w-full",
-                    index <= currentIndex ? "bg-primary" : "bg-gray-400"
+                    "h-0.5 flex-1",
+                    index < currentIndex ? "bg-primary" : "bg-muted"
                   )}
                 />
               )}
-            </div>
-          </Scoped>
-        ))}
-      </div>
-    </>
+            </Scoped>
+          );
+        })}
+      </ol>
+    </nav>
   );
 };
 
