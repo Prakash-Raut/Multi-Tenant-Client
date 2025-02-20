@@ -7,10 +7,39 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { api } from "@/lib/config";
+import { Order } from "@/types";
 import { Banknote, Coins, LayoutDashboard } from "lucide-react";
+import { cookies } from "next/headers";
 import OrderStep from "./components/order-step";
 
-const OrderDetailPage = () => {
+const fetchOrder = async (orderId: string) => {
+  const cookieStore = await cookies();
+  const accessToken = cookieStore.get("accessToken")?.value;
+  const response = await fetch(
+    `${api}/api/order/orders/${orderId}?fields=address,paymentStatus,paymentMode`,
+    {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    }
+  );
+
+  if (!response.ok) {
+    throw new Error("An error occurred while fetching the order.");
+  }
+
+  const data: Order = await response.json();
+
+  return data;
+};
+
+const OrderDetailPage = async ({ params }: { params: { orderId: string } }) => {
+  const { orderId } = await params;
+
+  const order = await fetchOrder(orderId);
+
+  console.log(order);
   return (
     <section className="flex flex-col space-y-6">
       <Card>
@@ -28,8 +57,10 @@ const OrderDetailPage = () => {
             <CardTitle>Delivery Address</CardTitle>
           </CardHeader>
           <CardContent>
-            <h2 className="text-lg font-semibold">Prakash R</h2>
-            <p className="leading-7">Address</p>
+            <h2 className="text-lg font-semibold capitalize">
+              {order.customerId.firstName + " " + order.customerId.lastName}
+            </h2>
+            <p className="leading-7">{order.address}</p>
           </CardContent>
         </Card>
         <Card className="w-2/3">
@@ -40,17 +71,17 @@ const OrderDetailPage = () => {
             <div className="flex items-center gap-6">
               <LayoutDashboard />
               <h2 className="text-base font-medium">Order Reference</h2>
-              <span>123456789</span>
+              <span>{order._id}</span>
             </div>
             <div className="flex items-center gap-6">
               <Banknote />
               <h2 className="text-base font-medium">Payment Status</h2>
-              <span>Paid</span>
+              <span className="uppercase">{order.paymentStatus}</span>
             </div>
             <div className="flex items-center gap-6">
               <Coins />
               <h2 className="text-base font-medium">Payment Method</h2>
-              <span>Card</span>
+              <span className="uppercase">{order.paymentMode}</span>
             </div>
           </CardContent>
           <CardFooter>

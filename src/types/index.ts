@@ -113,7 +113,7 @@ export type OrderData = {
 
 export type Order = {
   _id: string;
-  customerId: string;
+  customerId: Customer;
   total: number;
   discount: number;
   taxes: number;

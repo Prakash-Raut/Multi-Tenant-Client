@@ -24,7 +24,6 @@ import Link from "next/link";
 const fetchOrders = async () => {
   const cookieStore = await cookies();
   const accessToken = cookieStore.get("accessToken")?.value;
-  console.log("Access Token", accessToken);
   const response = await fetch(`${api}/api/order/orders/me`, {
     headers: {
       Authorization: `Bearer ${accessToken}`,
