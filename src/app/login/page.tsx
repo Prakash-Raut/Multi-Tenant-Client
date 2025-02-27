@@ -1,6 +1,7 @@
 import { GalleryVerticalEnd } from "lucide-react";
 
 import Image from "next/image";
+import { Suspense } from "react";
 import { LoginForm } from "./components/login-form";
 
 const LoginPage = () => {
@@ -17,7 +18,9 @@ const LoginPage = () => {
         </div>
         <div className="flex flex-1 items-center justify-center">
           <div className="w-full max-w-xs">
-            <LoginForm />
+            <Suspense fallback={<div>Loading...</div>}>
+              <LoginForm />
+            </Suspense>
           </div>
         </div>
       </div>

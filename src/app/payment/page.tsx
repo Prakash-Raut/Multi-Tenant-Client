@@ -16,11 +16,11 @@ import CartCleaner from "../checkout/components/cart-cleaner";
 const PaymentPage = async ({
   searchParams,
 }: {
-  searchParams: {
+  searchParams: Promise<{
     success: string;
     orderId: string;
     restaurantId: string;
-  };
+  }>;
 }) => {
   const { success, orderId, restaurantId } = await searchParams;
 

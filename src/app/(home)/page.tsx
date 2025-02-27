@@ -7,7 +7,7 @@ import ProductList from "./components/product-list";
 export default function Home({
   searchParams,
 }: {
-  searchParams: { restaurantId: string };
+  searchParams: Promise<{ restaurantId: string }>;
 }) {
   return (
     <>

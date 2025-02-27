@@ -6,7 +6,7 @@ import ProductCard from "./product-card";
 const ProductList = async ({
   searchParams,
 }: {
-  searchParams: { restaurantId: string };
+  searchParams: Promise<{ restaurantId: string }>;
 }) => {
   const { restaurantId } = await searchParams;
 

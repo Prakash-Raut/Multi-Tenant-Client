@@ -18,7 +18,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { createOrder, getCustomer } from "@/lib/http/api";
 import { clearCart } from "@/lib/store/features/cart/cartSlice";
 import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
-import { Address, Customer, OrderData } from "@/types";
+import { Address, Customer, OrderData, PaymentMode } from "@/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { Coins, CreditCard } from "lucide-react";
@@ -110,7 +110,7 @@ const CustomerDetail = () => {
       customerId: customer?._id,
       comment: values.comment,
       address: values.address,
-      paymentMode: values.paymentMode,
+      paymentMode: values.paymentMode as PaymentMode,
     };
 
     createOrderMutate(orderData);

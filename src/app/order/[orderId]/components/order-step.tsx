@@ -62,7 +62,7 @@ const OrderStep = ({ orderId }: { orderId: string }) => {
 
   const currentIndex = useMemo(
     () => utils.getIndex(stepper.current.id),
-    [stepper.current.id]
+    [stepper]
   );
 
   const prevOrderStatus = useRef(orderData?.orderStatus);
@@ -85,10 +85,7 @@ const OrderStep = ({ orderId }: { orderId: string }) => {
 
   return (
     <nav aria-label="Checkout Steps" className="group my-4">
-      <ol
-        className="flex items-baseline justify-between gap-2"
-        aria-orientation="horizontal"
-      >
+      <ol className="flex items-baseline justify-between gap-2">
         {stepper.all.map((step, index, array) => {
           // Determine button variant for each step
           const variant =

@@ -34,7 +34,11 @@ const fetchOrder = async (orderId: string) => {
   return data;
 };
 
-const OrderDetailPage = async ({ params }: { params: { orderId: string } }) => {
+const OrderDetailPage = async ({
+  params,
+}: {
+  params: Promise<{ orderId: string }>;
+}) => {
   const { orderId } = await params;
 
   const order = await fetchOrder(orderId);

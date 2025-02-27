@@ -6,11 +6,11 @@ import CustomerDetail from "./components/customer-detail";
 const CheckoutPage = async ({
   searchParams,
 }: {
-  searchParams: { restaurantId: string };
+  searchParams: Promise<{ restaurantId: string }>;
 }) => {
   const session = await getSession();
-
-  const sanitized = sanitizeParams(searchParams);
+  const sp = await searchParams;
+  const sanitized = sanitizeParams(sp);
   const sParams = new URLSearchParams(sanitized);
   const existingQueryString = sParams.toString();
 

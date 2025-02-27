@@ -9,7 +9,7 @@ const CartCleaner = () => {
 
   useEffect(() => {
     dispatch(clearCart());
-  }, []);
+  }, [dispatch]);
 
   return null;
 };

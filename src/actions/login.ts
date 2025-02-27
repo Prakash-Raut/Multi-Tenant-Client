@@ -1,7 +1,7 @@
 "use server";
 
 import { api } from "@/lib/config";
-import cookie from "cookie";
+import * as cookie from "cookie";
 import { cookies } from "next/headers";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any

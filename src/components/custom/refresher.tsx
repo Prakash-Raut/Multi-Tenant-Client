@@ -20,7 +20,7 @@ const Refresher = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
-  const refreshAccessToken = async () => {
+  const refreshAccessToken = React.useCallback(async () => {
     try {
       const response = await fetch("/api/auth/refresh", {
         method: "POST",
@@ -35,7 +35,7 @@ const Refresher = ({ children }: { children: React.ReactNode }) => {
     }
 
     startRefresh();
-  };
+  }, []);
 
   const startRefresh = React.useCallback(async () => {
     if (timeoutId.current) {

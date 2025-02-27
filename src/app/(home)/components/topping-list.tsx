@@ -26,7 +26,7 @@ const ToppingList = ({
       setToppings(toppingsData);
     };
     fetchToppings();
-  }, []);
+  }, [tenantId]);
 
   return (
     <section className="mt-6">

@@ -1,5 +1,5 @@
 import { api } from "@/lib/config";
-import cookie from "cookie";
+import * as cookie from "cookie";
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 

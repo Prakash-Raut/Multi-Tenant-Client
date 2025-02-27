@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import CartItems from "./cart-items";
 
 const CartPage = () => {
@@ -5,7 +6,9 @@ const CartPage = () => {
     <section className="container mx-auto space-y-6">
       <h1 className="text-lg font-bold">Shopping Cart</h1>
       <div className="mt-6 rounded-lg bg-white p-6">
-        <CartItems />
+        <Suspense fallback={<div>Loading...</div>}>
+          <CartItems />
+        </Suspense>
       </div>
     </section>
   );
