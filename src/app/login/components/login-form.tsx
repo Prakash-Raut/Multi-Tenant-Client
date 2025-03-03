@@ -47,6 +47,7 @@ export const LoginForm = ({
             name="email"
             type="email"
             placeholder="m@example.com"
+            defaultValue="mike_ross@email.com"
             required
           />
         </div>
@@ -60,7 +61,13 @@ export const LoginForm = ({
               Forgot your password?
             </a>
           </div>
-          <Input id="password" name="password" type="password" required />
+          <Input
+            id="password"
+            name="password"
+            type="password"
+            required
+            defaultValue="mike@091"
+          />
         </div>
         <p
           aria-live="polite"
