@@ -40,7 +40,7 @@ const ProductList = async ({
 
   return (
     <section className="container mx-auto flex items-center justify-between px-24 py-4">
-      <Tabs defaultValue={categories[0]._id}>
+      <Tabs defaultValue={categories[1]._id}>
         <TabsList>
           {categories.map((category: Category) => (
             <TabsTrigger
