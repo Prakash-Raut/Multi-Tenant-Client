@@ -23,7 +23,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { Coins, CreditCard } from "lucide-react";
 import { useSearchParams } from "next/navigation";
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { AddressModal } from "./address-modal";
@@ -67,15 +67,22 @@ const CustomerDetail = () => {
   const cart = useAppSelector((state) => state.cart);
   const dispatch = useAppDispatch();
 
+  useEffect(() => {
+    idempotencyKeyRef.current = uuidv4() + (customer?._id || "");
+  }, [cart]);
+
   const { mutate: createOrderMutate, isPending: isPlaceOrderPending } =
     useMutation({
       mutationKey: ["createNewOrder"],
       mutationFn: async (orderData: OrderData) => {
-        const idempotencyKey = idempotencyKeyRef.current
-          ? idempotencyKeyRef.current
-          : (idempotencyKeyRef.current = uuidv4() + customer?._id);
+        // const idempotencyKey = idempotencyKeyRef.current
+        //   ? idempotencyKeyRef.current
+        //   : (idempotencyKeyRef.current = uuidv4() + customer?._id);
 
-        const { data } = await createOrder(orderData, idempotencyKey);
+        const { data } = await createOrder(
+          orderData,
+          idempotencyKeyRef.current
+        );
         return data;
       },
       retry: 3,
@@ -89,6 +96,8 @@ const CustomerDetail = () => {
 
         // TODO: THIS WILL HAPPEN WHEN PAYMENT MODE IS CASH
         // clear cart, redirect user to order status page
+        // Reset idempotency key only after a successful order
+        idempotencyKeyRef.current = "";
       },
     });
 
