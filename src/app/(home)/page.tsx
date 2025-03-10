@@ -1,3 +1,6 @@
+import FAQ from "@/components/custom/faq";
+import Footer from "@/components/custom/footer";
+import Testimonial from "@/components/custom/testimonials";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import { Suspense } from "react";
@@ -31,6 +34,11 @@ export default function Home({
       <Suspense fallback={<FallBackSkeleton />}>
         <ProductList searchParams={searchParams} />
       </Suspense>
+      <div className="container flex flex-col items-center justify-center overflow-hidden">
+        <Testimonial />
+        <FAQ />
+      </div>
+      <Footer />
     </>
   );
 }

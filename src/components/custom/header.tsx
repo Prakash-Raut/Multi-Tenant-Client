@@ -11,8 +11,6 @@ import TenantSelect from "./tenant-select";
 const Header = async () => {
   const session = await getSession();
 
-  console.log(session);
-
   const tenantResponse = await fetch(
     `${api}/api/auth/tenants?perPage=100&currentPage=1`,
     {

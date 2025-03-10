@@ -15,7 +15,6 @@ export const logout = async () => {
   });
 
   if (!response.ok) {
-    console.log("Logout failed", response.status);
     return false;
   }
 
