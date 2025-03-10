@@ -4,54 +4,64 @@ import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 
 export async function POST() {
-  try {
-    const cookieStore = await cookies();
+	try {
+		const cookieStore = await cookies();
 
-    const response = await fetch(`${api}/api/auth/auth/refresh`, {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${cookieStore.get("accessToken")?.value}`,
-        Cookie: `refreshToken=${cookieStore.get("refreshToken")?.value}`,
-      },
-    });
+		const response = await fetch(`${api}/api/auth/auth/refresh`, {
+			method: "POST",
+			headers: {
+				Authorization: `Bearer ${cookieStore.get("accessToken")?.value}`,
+				Cookie: `refreshToken=${cookieStore.get("refreshToken")?.value}`,
+			},
+		});
 
-    if (!response.ok) {
-      console.error("Refresh failed", response.status);
-      return NextResponse.json({ success: false });
-    }
+		if (!response.ok) {
+			console.error("Refresh failed", response.status);
+			return NextResponse.json({ success: false });
+		}
 
-    const c = response.headers.getSetCookie();
+		const c = response.headers.getSetCookie();
 
-    const accessToken = c.find((cookie) => cookie.includes("accessToken"));
-    const refreshToken = c.find((cookie) => cookie.includes("refreshToken"));
+		const accessToken = c.find((cookie) => cookie.includes("accessToken"));
+		const refreshToken = c.find((cookie) => cookie.includes("refreshToken"));
 
-    if (!accessToken || !refreshToken) {
-      console.error("Token could not found", response.status);
-      return NextResponse.json({ success: false });
-    }
+		if (!accessToken || !refreshToken) {
+			console.error("Token could not found", response.status);
+			return NextResponse.json({ success: false });
+		}
 
-    const parsedAccessToken = cookie.parse(accessToken);
-    const parsedRefreshToken = cookie.parse(refreshToken);
+		const parsedAccessToken = cookie.parse(accessToken);
+		const parsedRefreshToken = cookie.parse(refreshToken);
 
-    cookieStore.set("accessToken", parsedAccessToken.accessToken!, {
-      expires: new Date(parsedAccessToken.Expires!),
-      httpOnly: (parsedAccessToken.httpOnly as unknown as boolean) || true,
-      domain: parsedAccessToken.Domain,
-      path: parsedAccessToken.Path,
-      sameSite: parsedAccessToken.SameSite as "strict",
-    });
+		if (!parsedAccessToken.accessToken || !parsedRefreshToken.refreshToken) {
+			console.error("Token could not parsed", response.status);
+			return NextResponse.json({ success: false });
+		}
 
-    cookieStore.set("refreshToken", parsedRefreshToken.refreshToken!, {
-      expires: new Date(parsedRefreshToken.Expires!),
-      httpOnly: (parsedRefreshToken.httpOnly as unknown as boolean) || true,
-      domain: parsedRefreshToken.Domain,
-      path: parsedRefreshToken.Path,
-      sameSite: parsedRefreshToken.SameSite as "strict",
-    });
+		if (!parsedAccessToken.Expires || !parsedRefreshToken.Expires) {
+			console.error("Token could not parsed", response.status);
+			return NextResponse.json({ success: false });
+		}
 
-    return NextResponse.json({ success: true });
-  } catch (error) {
-    console.error("Failed to refresh access token", error);
-    return NextResponse.json({ success: false });
-  }
+		cookieStore.set("accessToken", parsedAccessToken.accessToken, {
+			expires: new Date(parsedAccessToken.Expires),
+			httpOnly: (parsedAccessToken.httpOnly as unknown as boolean) || true,
+			domain: parsedAccessToken.Domain,
+			path: parsedAccessToken.Path,
+			sameSite: parsedAccessToken.SameSite as "strict",
+		});
+
+		cookieStore.set("refreshToken", parsedRefreshToken.refreshToken, {
+			expires: new Date(parsedRefreshToken.Expires),
+			httpOnly: (parsedRefreshToken.httpOnly as unknown as boolean) || true,
+			domain: parsedRefreshToken.Domain,
+			path: parsedRefreshToken.Path,
+			sameSite: parsedRefreshToken.SameSite as "strict",
+		});
+
+		return NextResponse.json({ success: true });
+	} catch (error) {
+		console.error("Failed to refresh access token", error);
+		return NextResponse.json({ success: false });
+	}
 }

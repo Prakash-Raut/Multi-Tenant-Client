@@ -4,76 +4,78 @@ import * as jose from "jose";
 import React from "react";
 
 const Refresher = ({ children }: { children: React.ReactNode }) => {
-  const timeoutId = React.useRef<NodeJS.Timeout>(null);
-  const getAccessToken = async () => {
-    try {
-      const response = await fetch("/api/auth/accessToken");
+	const timeoutId = React.useRef<NodeJS.Timeout>(null);
+	const getAccessToken = async () => {
+		try {
+			const response = await fetch("/api/auth/accessToken");
 
-      if (!response.ok) {
-        return;
-      }
+			if (!response.ok) {
+				return;
+			}
 
-      const accessToken = await response.json();
-      return accessToken.token;
-    } catch (error) {
-      console.error("Failed to get access token", error);
-    }
-  };
+			const accessToken = await response.json();
+			return accessToken.token;
+		} catch (error) {
+			console.error("Failed to get access token", error);
+		}
+	};
 
-  const refreshAccessToken = React.useCallback(async () => {
-    try {
-      const response = await fetch("/api/auth/refresh", {
-        method: "POST",
-      });
+	const refreshAccessToken = React.useCallback(async () => {
+		try {
+			const response = await fetch("/api/auth/refresh", {
+				method: "POST",
+			});
 
-      if (!response.ok) {
-        console.error("Failed to refresh access token", response.status);
-        return;
-      }
-    } catch (error) {
-      console.error("Failed to refresh access token", error);
-    }
+			if (!response.ok) {
+				console.error("Failed to refresh access token", response.status);
+				return;
+			}
+		} catch (error) {
+			console.error("Failed to refresh access token", error);
+		}
 
-    startRefresh();
-  }, []);
+		startRefresh();
+	}, []);
 
-  const startRefresh = React.useCallback(async () => {
-    if (timeoutId.current) {
-      clearTimeout(timeoutId.current);
-    }
+	const memoizedGetAccessToken = React.useCallback(getAccessToken, []);
 
-    try {
-      const accessToken = await getAccessToken();
+	const startRefresh = React.useCallback(async () => {
+		if (timeoutId.current) {
+			clearTimeout(timeoutId.current);
+		}
 
-      if (!accessToken) {
-        return;
-      }
+		try {
+			const accessToken = await memoizedGetAccessToken();
 
-      const token = jose.decodeJwt(accessToken);
+			if (!accessToken) {
+				return;
+			}
 
-      const expiry = token.exp! * 1000; // convert to milliseconds
-      const currentTime = Date.now();
-      const refreshTime = expiry - currentTime - 5000; // 5 seconds before expiry
+			const token = jose.decodeJwt(accessToken);
 
-      timeoutId.current = setTimeout(() => {
-        refreshAccessToken();
-      }, refreshTime);
-    } catch (error) {
-      console.error("Failed to start refresh", error);
-    }
-  }, [refreshAccessToken]);
+			const expiry = token.exp ? token.exp * 1000 : 0;
+			const currentTime = Date.now();
+			const refreshTime = expiry - currentTime - 5000; // 5 seconds before expiry
 
-  React.useEffect(() => {
-    startRefresh();
+			timeoutId.current = setTimeout(() => {
+				refreshAccessToken();
+			}, refreshTime);
+		} catch (error) {
+			console.error("Failed to start refresh", error);
+		}
+	}, [refreshAccessToken, memoizedGetAccessToken]);
 
-    return () => {
-      if (timeoutId.current) {
-        clearTimeout(timeoutId.current);
-      }
-    };
-  }, [startRefresh]);
+	React.useEffect(() => {
+		startRefresh();
 
-  return <div>{children}</div>;
+		return () => {
+			if (timeoutId.current) {
+				clearTimeout(timeoutId.current);
+			}
+		};
+	}, [startRefresh]);
+
+	return <div>{children}</div>;
 };
 
 export default Refresher;
