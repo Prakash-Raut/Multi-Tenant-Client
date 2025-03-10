@@ -1,11 +1,11 @@
 import Header from "@/components/custom/header";
 import Refresher from "@/components/custom/refresher";
 import { Toaster } from "@/components/ui/sonner";
+import QueryProvider from "@/lib/providers/QueryProvider";
+import StoreProvider from "@/lib/providers/StoreProvider";
 import type { Metadata } from "next";
 import { Manrope } from "next/font/google";
 import "./globals.css";
-import QueryProvider from "./providers/QueryProvider";
-import StoreProvider from "./providers/StoreProvider";
 
 const manrope = Manrope({
 	variable: "--font-manrope",
@@ -28,7 +28,6 @@ export default function RootLayout({
 				<body className={`${manrope.variable} antialiased`}>
 					<QueryProvider>
 						<Refresher>
-							<Header />
 							<main className="container mx-auto flex flex-col items-center justify-between">
 								{children}
 							</main>
