@@ -4,114 +4,114 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 
 import {
-  ArrowLeft,
-  CheckCircle2,
-  CircleX,
-  LayoutDashboard,
-  Store,
+	ArrowLeft,
+	CheckCircle2,
+	CircleX,
+	LayoutDashboard,
+	Store,
 } from "lucide-react";
 import Link from "next/link";
 import CartCleaner from "../checkout/components/cart-cleaner";
 
 const PaymentPage = async ({
-  searchParams,
+	searchParams,
 }: {
-  searchParams: Promise<{
-    success: string;
-    orderId: string;
-    restaurantId: string;
-  }>;
+	searchParams: Promise<{
+		success: string;
+		orderId: string;
+		restaurantId: string;
+	}>;
 }) => {
-  const { success, orderId, restaurantId } = await searchParams;
+	const { success, orderId, restaurantId } = await searchParams;
 
-  const isOrderSucess = success === "true";
+	const isOrderSucess = success === "true";
 
-  return (
-    <>
-      {isOrderSucess && <CartCleaner />}
-      <div className="mt-32 flex w-full flex-col items-center gap-4">
-        {isOrderSucess ? (
-          <>
-            <CheckCircle2 size={80} className="text-green-500" />
-            <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">
-              Order Placed Successfully
-            </h1>
-            <p className="leading-7 [&:not(:first-child)]:mt-6">
-              Thank you for shopping with us. Your order has been placed
-              successfully.
-            </p>
-          </>
-        ) : (
-          <>
-            <CircleX size={80} className="text-red-500" />
-            <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">
-              Order Failed
-            </h1>
-            <p className="leading-7 [&:not(:first-child)]:mt-6">
-              There was an issue with your order. Please try again later.
-            </p>
-          </>
-        )}
+	return (
+		<>
+			{isOrderSucess && <CartCleaner />}
+			<div className="mt-32 flex w-full flex-col items-center gap-4">
+				{isOrderSucess ? (
+					<>
+						<CheckCircle2 size={80} className="text-green-500" />
+						<h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">
+							Order Placed Successfully
+						</h1>
+						<p className="leading-7 [&:not(:first-child)]:mt-6">
+							Thank you for shopping with us. Your order has been placed
+							successfully.
+						</p>
+					</>
+				) : (
+					<>
+						<CircleX size={80} className="text-red-500" />
+						<h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">
+							Order Failed
+						</h1>
+						<p className="leading-7 [&:not(:first-child)]:mt-6">
+							There was an issue with your order. Please try again later.
+						</p>
+					</>
+				)}
 
-        {isOrderSucess && (
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-start justify-between gap-12">
-                <div className="flex items-center gap-3">
-                  <Store className="text-primary" />
-                  <span>Your Order Information</span>
-                </div>
-                <Badge variant="secondary" className="px-4 text-base">
-                  Confirmed
-                </Badge>
-              </CardTitle>
-            </CardHeader>
-            <Separator />
-            <CardContent className="space-y-2 p-4">
-              <div className="flex items-center gap-4">
-                <LayoutDashboard size={20} />
-                <h2 className="text-base font-medium tracking-tight first:mt-0">
-                  Order Refrence:
-                </h2>
-                <Link
-                  href={`/order-status/${orderId}?restaurantId=${restaurantId}`}
-                  className="underline"
-                >
-                  {orderId}
-                </Link>
-              </div>
-              <div className="flex items-center gap-4">
-                <LayoutDashboard size={20} />
-                <h2 className="text-base font-medium tracking-tight first:mt-0">
-                  Payment Status
-                </h2>
-                <span>Paid</span>
-              </div>
-            </CardContent>
-          </Card>
-        )}
+				{isOrderSucess && (
+					<Card>
+						<CardHeader>
+							<CardTitle className="flex items-start justify-between gap-12">
+								<div className="flex items-center gap-3">
+									<Store className="text-primary" />
+									<span>Your Order Information</span>
+								</div>
+								<Badge variant="secondary" className="px-4 text-base">
+									Confirmed
+								</Badge>
+							</CardTitle>
+						</CardHeader>
+						<Separator />
+						<CardContent className="space-y-2 p-4">
+							<div className="flex items-center gap-4">
+								<LayoutDashboard size={20} />
+								<h2 className="text-base font-medium tracking-tight first:mt-0">
+									Order Refrence:
+								</h2>
+								<Link
+									href={`/order-status/${orderId}?restaurantId=${restaurantId}`}
+									className="underline"
+								>
+									{orderId}
+								</Link>
+							</div>
+							<div className="flex items-center gap-4">
+								<LayoutDashboard size={20} />
+								<h2 className="text-base font-medium tracking-tight first:mt-0">
+									Payment Status
+								</h2>
+								<span>Paid</span>
+							</div>
+						</CardContent>
+					</Card>
+				)}
 
-        {isOrderSucess ? (
-          <Button asChild>
-            <Link
-              href={`/order-status/${orderId}?restaurantId=${restaurantId}`}
-            >
-              <ArrowLeft size={20} />
-              Check Order Status
-            </Link>
-          </Button>
-        ) : (
-          <Button asChild>
-            {/* TODO: GET tenantId from the redirect url BACKEND */}
-            <Link href={`/checkout?restaurantId=${restaurantId}`} passHref>
-              <ArrowLeft size={20} />
-              Go Back to Checkout
-            </Link>
-          </Button>
-        )}
-      </div>
-    </>
-  );
+				{isOrderSucess ? (
+					<Button asChild>
+						<Link
+							href={`/order-status/${orderId}?restaurantId=${restaurantId}`}
+						>
+							<ArrowLeft size={20} />
+							Check Order Status
+						</Link>
+					</Button>
+				) : (
+					<Button asChild>
+						{/* TODO: GET tenantId from the redirect url BACKEND */}
+						<Link href={`/checkout?restaurantId=${restaurantId}`} passHref>
+							<ArrowLeft size={20} />
+							Go Back to Checkout
+						</Link>
+					</Button>
+				)}
+			</div>
+		</>
+	);
 };
 
 export default PaymentPage;

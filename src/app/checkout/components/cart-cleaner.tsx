@@ -5,13 +5,13 @@ import { useAppDispatch } from "@/lib/store/hooks";
 import { useEffect } from "react";
 
 const CartCleaner = () => {
-  const dispatch = useAppDispatch();
+	const dispatch = useAppDispatch();
 
-  useEffect(() => {
-    dispatch(clearCart());
-  }, [dispatch]);
+	useEffect(() => {
+		dispatch(clearCart());
+	}, [dispatch]);
 
-  return null;
+	return null;
 };
 
 export default CartCleaner;
