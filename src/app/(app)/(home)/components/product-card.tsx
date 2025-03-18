@@ -20,6 +20,7 @@ const ProductCard = ({ product }: PropTypes) => {
 					alt={product.name}
 					width={150}
 					height={150}
+					style={{ width: "auto", height: "auto" }}
 				/>
 			</CardHeader>
 			<CardContent>
