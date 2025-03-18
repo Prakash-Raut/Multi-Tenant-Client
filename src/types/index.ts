@@ -65,6 +65,7 @@ export interface Topping {
 
 export type Customer = {
 	_id: string;
+	userId: string;
 	firstName: string;
 	lastName: string;
 	email: string;
@@ -113,7 +114,7 @@ export type OrderData = {
 
 export type Order = {
 	_id: string;
-	customerId: Customer;
+	customer: Customer;
 	total: number;
 	discount: number;
 	taxes: number;

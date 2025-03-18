@@ -116,7 +116,7 @@ const CustomerDetail = () => {
 			cart: cart.cartItems,
 			couponCode: appliedCouponCode.current ? appliedCouponCode.current : "",
 			tenantId: restaurantId,
-			customerId: customer?._id,
+			customerId: customer?.userId,
 			comment: values.comment,
 			address: values.address,
 			paymentMode: values.paymentMode as PaymentMode,

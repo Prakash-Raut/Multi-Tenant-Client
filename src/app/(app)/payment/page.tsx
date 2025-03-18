@@ -74,7 +74,7 @@ const PaymentPage = async ({
 									Order Refrence:
 								</h2>
 								<Link
-									href={`/order-status/${orderId}?restaurantId=${restaurantId}`}
+									href={`/order/${orderId}?restaurantId=${restaurantId}`}
 									className="underline"
 								>
 									{orderId}
@@ -93,9 +93,7 @@ const PaymentPage = async ({
 
 				{isOrderSucess ? (
 					<Button asChild>
-						<Link
-							href={`/order-status/${orderId}?restaurantId=${restaurantId}`}
-						>
+						<Link href={`/order/${orderId}?restaurantId=${restaurantId}`}>
 							<ArrowLeft size={20} />
 							Check Order Status
 						</Link>

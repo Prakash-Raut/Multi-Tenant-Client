@@ -61,7 +61,7 @@ const OrderDetailPage = async ({
 					</CardHeader>
 					<CardContent>
 						<h2 className="text-lg font-semibold capitalize">
-							{`${order.customerId.firstName} ${order.customerId.lastName}`}
+							{`${order.customer.firstName} ${order.customer.lastName}`}
 						</h2>
 						<p className="leading-7">{order.address}</p>
 					</CardContent>
