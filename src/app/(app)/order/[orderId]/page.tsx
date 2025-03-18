@@ -8,7 +8,7 @@ import {
 	CardTitle,
 } from "@/components/ui/card";
 import { api } from "@/lib/config";
-import type { Order } from "@/types";
+import { type Order, OrderStatus } from "@/types";
 import { Banknote, Coins, LayoutDashboard } from "lucide-react";
 import { cookies } from "next/headers";
 import OrderStep from "./components/order-step";
@@ -17,7 +17,7 @@ const fetchOrder = async (orderId: string) => {
 	const cookieStore = await cookies();
 	const accessToken = cookieStore.get("accessToken")?.value;
 	const response = await fetch(
-		`${api}/api/order/orders/${orderId}?fields=address,paymentStatus,paymentMode`,
+		`${api}/api/order/orders/${orderId}?fields=address,paymentStatus,paymentMode,orderStatus`,
 		{
 			headers: {
 				Authorization: `Bearer ${accessToken}`,
@@ -88,7 +88,9 @@ const OrderDetailPage = async ({
 						</div>
 					</CardContent>
 					<CardFooter>
-						<Button variant="destructive">Cancel Order</Button>
+						{order.orderStatus !== OrderStatus.DELIVERED && (
+							<Button variant="destructive">Cancel Order</Button>
+						)}
 					</CardFooter>
 				</Card>
 			</div>

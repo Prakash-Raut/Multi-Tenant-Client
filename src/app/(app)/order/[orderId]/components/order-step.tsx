@@ -35,7 +35,7 @@ const { Scoped, useStepper, steps, utils } = defineStepper(
 		description: "Ready for pickup",
 	},
 	{
-		id: "out for delivery",
+		id: "out_for_delivery",
 		title: "Out For Delivery",
 		icon: PackageCheck,
 		description: "Order is out for delivery",
@@ -73,12 +73,10 @@ const OrderStep = ({ orderId }: { orderId: string }) => {
 			orderData?.orderStatus &&
 			orderData.orderStatus !== prevOrderStatus.current
 		) {
-			const currentIndex = utils.getIndex(stepper.current.id);
-			const nextStep = stepper.all[currentIndex + 1]?.id;
-
-			if (nextStep) {
-				stepper.goTo(nextStep);
-				prevOrderStatus.current = orderData.orderStatus; // Update the previous status
+			const newStepId = orderData.orderStatus;
+			if (stepper.current.id !== newStepId) {
+				stepper.goTo(newStepId);
+				prevOrderStatus.current = orderData.orderStatus; // Update previous status
 			}
 		}
 	}, [isSuccess, orderData?.orderStatus, stepper]);
@@ -87,6 +85,8 @@ const OrderStep = ({ orderId }: { orderId: string }) => {
 		<nav aria-label="Checkout Steps" className="group my-4">
 			<ol className="flex items-baseline justify-between gap-2">
 				{stepper.all.map((step, index, array) => {
+					const isActive = index === currentIndex;
+					const isLastStep = index === stepper.all.length - 1;
 					// Determine button variant for each step
 					const variant =
 						index < currentIndex
@@ -107,7 +107,13 @@ const OrderStep = ({ orderId }: { orderId: string }) => {
 									aria-posinset={index + 1}
 									aria-setsize={steps.length}
 									aria-selected={stepper.current.id === step.id}
-									className="flex size-10 items-center justify-center rounded-full"
+									className={cn(
+										"flex size-10 items-center justify-center rounded-full transition-all",
+										isActive &&
+											!isLastStep &&
+											"animate-blink border-2 border-primary",
+										isLastStep && isActive && "bg-primary text-white",
+									)}
 									onClick={() => stepper.goTo(step.id)}
 								>
 									<step.icon size={20} />
