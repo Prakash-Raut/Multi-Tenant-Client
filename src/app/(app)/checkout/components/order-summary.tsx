@@ -33,7 +33,6 @@ const OrderSummary = ({
 
 	const [discountError, setDiscountError] = useState<string | null>(null);
 
-	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	const [taxesPercentage, setTaxesPercentage] = useState(18);
 
 	const couponCodeRef = useRef<HTMLInputElement>(null);

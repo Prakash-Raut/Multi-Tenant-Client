@@ -18,11 +18,9 @@ export function hashTheItem(payload: CartItem): string {
 
 export const getFromPrice = (product: Product): number => {
 	const basePrice = Object.entries(product.priceConfiguration)
-		// eslint-disable-next-line @typescript-eslint/no-unused-vars
 		.filter(([key, value]) => {
 			return value.priceType === "base";
 		})
-		// eslint-disable-next-line @typescript-eslint/no-unused-vars
 		.reduce((acc, [key, value]) => {
 			const smallestPrice = Math.min(...Object.values(value.availableOptions));
 			return acc + smallestPrice;

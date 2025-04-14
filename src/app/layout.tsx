@@ -1,4 +1,3 @@
-import Header from "@/components/custom/header";
 import Refresher from "@/components/custom/refresher";
 import { Toaster } from "@/components/ui/sonner";
 import QueryProvider from "@/lib/providers/QueryProvider";
