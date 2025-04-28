@@ -13,7 +13,12 @@ export default async function signup(
 	const email = formData.get("email");
 	const password = formData.get("password");
 
-	// TODO: Request validation
+	if (!firstName || !lastName || !email || !password) {
+		return {
+			type: "error",
+			message: "All fields are required",
+		};
+	}
 
 	try {
 		const response = await fetch(`${api}/api/auth/auth/register`, {

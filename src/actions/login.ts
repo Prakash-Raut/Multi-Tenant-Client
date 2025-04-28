@@ -11,7 +11,12 @@ export default async function login(
 	const email = formData.get("email");
 	const password = formData.get("password");
 
-	// TODO: Request validation
+	if (!email || !password) {
+		return {
+			type: "error",
+			message: "Email and password are required",
+		};
+	}
 
 	try {
 		const response = await fetch(`${api}/api/auth/auth/login`, {

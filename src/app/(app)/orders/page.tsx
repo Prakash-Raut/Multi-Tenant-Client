@@ -45,7 +45,6 @@ const OrderPage = async ({
 	searchParams: Promise<{ restaurantId: string }>;
 }) => {
 	const { restaurantId } = await searchParams;
-	console.log(restaurantId);
 
 	const orders = await fetchOrders();
 
