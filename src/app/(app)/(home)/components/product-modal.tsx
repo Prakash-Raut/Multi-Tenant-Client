@@ -30,18 +30,6 @@ const ProductModal = ({ product }: { product: Product }) => {
 	const [isModalOpen, setIsModalOpen] = useState(false);
 	const dispatch = useAppDispatch();
 	const cartItems = useAppSelector((state) => state.cart.cartItems);
-	// const defaultConfig = Object.entries(product.category.priceConfiguration)
-	//   .map(([key, value]) => {
-	//     return {
-	//       [key]: value.availableOptions[0],
-	//     };
-	//   })
-	//   .reduce((acc, curr) => {
-	//     return {
-	//       ...acc,
-	//       ...curr,
-	//     };
-	//   }, {});
 	const defaultConfig = Object.entries(product.category.priceConfiguration)
 		.map(([key, value]) => ({ [key]: value.availableOptions[0] }))
 		.reduce((acc, curr) => Object.assign(acc, curr), {});
@@ -133,8 +121,13 @@ const ProductModal = ({ product }: { product: Product }) => {
 
 	return (
 		<Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
-			<DialogTrigger className="rounded-full bg-orange-200 px-6 py-2 text-orange-500 shadow outline-none transition-all duration-150 ease-linear hover:bg-orange-300 hover:shadow-lg focus:outline-none">
-				Choose
+			<DialogTrigger asChild>
+				<Button
+					variant="outline"
+					className="border-primary text-primary hover:bg-primary/10 hover:text-primary/90"
+				>
+					Choose
+				</Button>
 			</DialogTrigger>
 			<DialogContent className="max-w-3xl">
 				<div className="flex items-center justify-between gap-4">

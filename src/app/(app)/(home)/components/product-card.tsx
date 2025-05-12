@@ -1,9 +1,4 @@
-import {
-	Card,
-	CardContent,
-	CardFooter,
-	CardHeader,
-} from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { getFromPrice } from "@/lib/utils";
 import type { Product } from "@/types";
 import Image from "next/image";
@@ -13,27 +8,29 @@ type PropTypes = { product: Product };
 
 const ProductCard = ({ product }: PropTypes) => {
 	return (
-		<Card className="rounded-2xl border-none">
-			<CardHeader className="flex items-center justify-center">
-				<Image
-					src={product.image}
-					alt={product.name}
-					width={150}
-					height={150}
-					style={{ width: "auto", height: "auto" }}
-				/>
-			</CardHeader>
-			<CardContent>
-				<h2 className="text-xl font-bold">{product.name}</h2>
-				<p className="mt-2 text-sm">{product.description}</p>
+		<Card className="overflow-hidden">
+			<CardContent className="p-0">
+				<div className="relative h-48 w-full">
+					<Image
+						src={product.image}
+						alt={product.name}
+						fill
+						className="object-cover"
+					/>
+				</div>
+				<div className="p-4">
+					<h3 className="text-xl font-bold">{product.name}</h3>
+					<p className="text-sm text-gray-500 mt-1 mb-4">
+						{product.description}
+					</p>
+					<div className="flex items-center justify-between">
+						<span className="text-lg font-bold text-primary">
+							₹{getFromPrice(product)}
+						</span>
+						<ProductModal product={product} />
+					</div>
+				</div>
 			</CardContent>
-			<CardFooter className="flex items-center justify-between">
-				<p className="">
-					<span>From </span>
-					<span className="font-bold">₹{getFromPrice(product)}</span>
-				</p>
-				<ProductModal product={product} />
-			</CardFooter>
 		</Card>
 	);
 };

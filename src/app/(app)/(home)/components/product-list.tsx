@@ -39,9 +39,10 @@ const ProductList = async ({
 	const products: { data: Product[] } = await productResponse.json();
 
 	return (
-		<section className="container mx-auto flex items-center justify-between px-24 py-4">
-			<Tabs defaultValue={categories[1]._id}>
-				<TabsList>
+		<section className="container mx-auto flex flex-col items-center justify-between px-24 py-4">
+			<h2 className="text-3xl font-bold text-center mb-10">Our Menu</h2>
+			<Tabs defaultValue={categories[1]._id} className="w-full">
+				<TabsList className="grid w-full max-w-md mx-auto grid-cols-2 mb-8">
 					{categories.map((category: Category) => (
 						<TabsTrigger
 							key={category._id}

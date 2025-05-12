@@ -29,7 +29,7 @@ export default function Home({
 					<p className="mt-8 max-w-lg text-2xl leading-snug">
 						Enjoy a Free Meal if Your Order Takes More Than 45 Minutes!
 					</p>
-					<Button className="px6 mt-8 rounded-full py-7 text-lg font-bold">
+					<Button className="px6 mt-8 rounded-2xl py-7 text-lg font-bold">
 						Get your pizza now
 					</Button>
 				</div>
@@ -40,7 +40,7 @@ export default function Home({
 			<Suspense fallback={<FallBackSkeleton />}>
 				<ProductList searchParams={searchParams} />
 			</Suspense>
-			<div className="container flex flex-col items-center justify-center overflow-hidden">
+			<div className="container flex flex-col items-center justify-center overflow-hidden bg-muted">
 				<FAQ />
 			</div>
 			<Footer />

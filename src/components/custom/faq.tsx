@@ -56,7 +56,7 @@ const FAQ = () => {
 						<AccordionItem
 							key={question}
 							value={`question-${index}`}
-							className="rounded-xl border-none bg-accent px-4 py-1"
+							className="rounded-xl border-none bg-gray-50 px-4 py-1"
 						>
 							<AccordionPrimitive.Header className="flex">
 								<AccordionPrimitive.Trigger
