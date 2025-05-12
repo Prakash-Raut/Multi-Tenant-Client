@@ -34,7 +34,7 @@ export default function Home({
 					</Button>
 				</div>
 				<div>
-					<Image src="/pizza-main.png" alt="pizza" width={400} height={400} />
+					<Image src="/pizza.jpg" alt="pizza" width={400} height={400} />
 				</div>
 			</section>
 			<Suspense fallback={<FallBackSkeleton />}>
