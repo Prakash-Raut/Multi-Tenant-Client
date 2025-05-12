@@ -1,5 +1,12 @@
+import type { Metadata } from "next";
 import { Suspense } from "react";
 import CartItems from "./cart-items";
+
+export const metadata: Metadata = {
+	title: "Your Cart - Pizza Galleria",
+	description:
+		"Review the delicious pizzas and sides in your cart before proceeding to checkout. Customize your order and enjoy great deals!",
+};
 
 const CartPage = () => {
 	return (

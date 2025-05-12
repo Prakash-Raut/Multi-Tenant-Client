@@ -18,8 +18,15 @@ import {
 import { api } from "@/lib/config";
 import type { Order } from "@/types";
 import { format } from "date-fns";
+import type { Metadata } from "next";
 import { cookies } from "next/headers";
 import Link from "next/link";
+
+export const metadata: Metadata = {
+	title: "Your Orders - Pizza Galleria	",
+	description:
+		"Access your past Pizza Galleria orders, reorder your favorites, and track current deliveries from your order history.",
+};
 
 const fetchOrders = async () => {
 	const cookieStore = await cookies();

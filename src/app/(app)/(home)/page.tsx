@@ -2,10 +2,17 @@ import FAQ from "@/components/custom/faq";
 import Footer from "@/components/custom/footer";
 import Testimonial from "@/components/custom/testimonials";
 import { Button } from "@/components/ui/button";
+import type { Metadata } from "next";
 import Image from "next/image";
 import { Suspense } from "react";
 import FallBackSkeleton from "./components/fallback-skeleton";
 import ProductList from "./components/product-list";
+
+export const metadata: Metadata = {
+	title: "Pizza Galleria - Order Pizza Online",
+	description:
+		"Welcome to Pizza Galleria! Explore our menu, discover exclusive deals, and order your favorite pizzas online with ease.",
+};
 
 export default function Home({
 	searchParams,

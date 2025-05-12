@@ -10,8 +10,15 @@ import {
 	LayoutDashboard,
 	Store,
 } from "lucide-react";
+import type { Metadata } from "next";
 import Link from "next/link";
 import CartCleaner from "../checkout/components/cart-cleaner";
+
+export const metadata: Metadata = {
+	title: "Payment - Dominos",
+	description:
+		"Choose your preferred payment method and complete your Pizza Galleria order securely. Fast and safe transactions guaranteed.",
+};
 
 const PaymentPage = async ({
 	searchParams,

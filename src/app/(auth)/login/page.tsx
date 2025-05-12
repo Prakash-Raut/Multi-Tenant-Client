@@ -1,8 +1,15 @@
 import Logo from "@/components/icons/logo";
+import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { Suspense } from "react";
 import { LoginForm } from "./components/login-form";
+
+export const metadata: Metadata = {
+	title: "Login to Pizza Galleria",
+	description:
+		"Access your Pizza Galleria account to track orders, save favorites, and enjoy a personalized pizza ordering experience.",
+};
 
 const LoginPage = () => {
 	return (

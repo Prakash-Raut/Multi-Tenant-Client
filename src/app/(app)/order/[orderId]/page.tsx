@@ -10,8 +10,15 @@ import {
 import { api } from "@/lib/config";
 import { type Order, OrderStatus } from "@/types";
 import { Banknote, Coins, LayoutDashboard } from "lucide-react";
+import type { Metadata } from "next";
 import { cookies } from "next/headers";
 import OrderStep from "./components/order-step";
+
+export const metadata: Metadata = {
+	title: "Order Details - Pizza Galleria",
+	description:
+		"View the details of your recent Pizza Galleria order, including status updates, items ordered, and estimated delivery time.",
+};
 
 const fetchOrder = async (orderId: string) => {
 	const cookieStore = await cookies();

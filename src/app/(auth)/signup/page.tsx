@@ -1,7 +1,14 @@
 import Logo from "@/components/icons/logo";
+import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { SignUpForm } from "./components/signup-form";
+
+export const metadata: Metadata = {
+	title: "Create Your Pizza Galleria Account",
+	description:
+		"Access your Pizza Galleria account to track orders, save favorites, and enjoy a personalized pizza ordering experience.",
+};
 
 const SignUpPage = () => {
 	return (

@@ -1,7 +1,14 @@
 import { getSession } from "@/lib/session";
 import { sanitizeParams } from "@/lib/utils";
+import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import CustomerDetail from "./components/customer-detail";
+
+export const metadata: Metadata = {
+	title: "Checkout - Pizza Galleria",
+	description:
+		"Securely complete your Pizza Galleria order with our fast and easy checkout process. Choose delivery or pickup, and enjoy your meal!",
+};
 
 const CheckoutPage = async ({
 	searchParams,
