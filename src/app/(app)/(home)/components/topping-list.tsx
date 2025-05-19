@@ -1,3 +1,5 @@
+"use client";
+
 import { api } from "@/lib/config";
 import type { Topping } from "@/types";
 import { useSearchParams } from "next/navigation";
