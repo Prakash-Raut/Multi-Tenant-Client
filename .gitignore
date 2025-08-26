@@ -49,3 +49,6 @@ test-results/
 .vscode/
 .idea/
 Thumbs.db
+
+# Sentry Config File
+.env.sentry-build-plugin
