@@ -1,5 +1,6 @@
 import Refresher from "@/components/custom/refresher";
 import { Toaster } from "@/components/ui/sonner";
+import AmplitudeContextProvider from "@/lib/providers/AmplitudeProvider";
 import QueryProvider from "@/lib/providers/QueryProvider";
 import StoreProvider from "@/lib/providers/StoreProvider";
 import type { Metadata } from "next";
@@ -29,13 +30,15 @@ export default function RootLayout({
 		<html lang="en">
 			<StoreProvider>
 				<body className={`${manrope.variable} antialiased`}>
-					<QueryProvider>
-						<Refresher>
-							<main className="container mx-auto flex flex-col items-center justify-between">
-								{children}
-							</main>
-						</Refresher>
-					</QueryProvider>
+					<AmplitudeContextProvider>
+						<QueryProvider>
+							<Refresher>
+								<main className="container mx-auto flex flex-col items-center justify-between">
+									{children}
+								</main>
+							</Refresher>
+						</QueryProvider>
+					</AmplitudeContextProvider>
 					<Toaster richColors />
 				</body>
 			</StoreProvider>
