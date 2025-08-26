@@ -1,4 +1,3 @@
-import FAQ from "@/components/custom/faq";
 import Footer from "@/components/custom/footer";
 import { Button } from "@/components/ui/button";
 import type { Metadata } from "next";
@@ -40,9 +39,6 @@ export default function Home({
 			<Suspense fallback={<FallBackSkeleton />}>
 				<ProductList searchParams={searchParams} />
 			</Suspense>
-			<div className="container flex flex-col items-center justify-center overflow-hidden bg-muted">
-				<FAQ />
-			</div>
 			<Footer />
 		</>
 	);
