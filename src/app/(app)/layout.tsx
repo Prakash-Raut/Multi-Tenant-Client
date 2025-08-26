@@ -1,4 +1,4 @@
-import Header from "@/components/custom/header";
+import Header from "@/components/navigation/header";
 import type React from "react";
 
 const AppLayout = ({

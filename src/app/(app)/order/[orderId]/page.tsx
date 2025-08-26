@@ -1,3 +1,4 @@
+import OrderStep from "@/components/order/order-step";
 import { Button } from "@/components/ui/button";
 import {
 	Card,
@@ -12,7 +13,6 @@ import { type Order, OrderStatus } from "@/types";
 import { Banknote, Coins, LayoutDashboard } from "lucide-react";
 import type { Metadata } from "next";
 import { cookies } from "next/headers";
-import OrderStep from "./components/order-step";
 
 export const metadata: Metadata = {
 	title: "Order Details - Pizza Galleria",

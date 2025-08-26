@@ -1,6 +1,6 @@
+import CartItems from "@/components/cart/cart-items";
 import type { Metadata } from "next";
 import { Suspense } from "react";
-import CartItems from "./cart-items";
 
 export const metadata: Metadata = {
 	title: "Your Cart - Pizza Galleria",

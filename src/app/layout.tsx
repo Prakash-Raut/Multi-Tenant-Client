@@ -1,4 +1,4 @@
-import Refresher from "@/components/custom/refresher";
+import Refresher from "@/components/navigation/refresher";
 import { Toaster } from "@/components/ui/sonner";
 import AmplitudeContextProvider from "@/lib/providers/AmplitudeProvider";
 import QueryProvider from "@/lib/providers/QueryProvider";

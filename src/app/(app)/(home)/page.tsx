@@ -1,10 +1,10 @@
-import Footer from "@/components/custom/footer";
+import FallBackSkeleton from "@/components/home/fallback-skeleton";
+import ProductList from "@/components/home/product-list";
+import Footer from "@/components/navigation/footer";
 import { Button } from "@/components/ui/button";
 import type { Metadata } from "next";
 import Image from "next/image";
 import { Suspense } from "react";
-import FallBackSkeleton from "./components/fallback-skeleton";
-import ProductList from "./components/product-list";
 
 export const metadata: Metadata = {
 	title: "Pizza Galleria - Order Pizza Online",
