@@ -1,9 +1,9 @@
 "use client";
 
-import { api } from "@/lib/config";
-import type { Topping } from "@/types";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
+import { api } from "@/lib/config";
+import type { Topping } from "@/types";
 import ToppingCard from "./topping-card";
 
 type ToppingListProps = {

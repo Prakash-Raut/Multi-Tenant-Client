@@ -1,5 +1,5 @@
-import type { CouponCodeData, OrderData } from "@/types";
 import axios from "axios";
+import type { CouponCodeData, OrderData } from "@/types";
 
 const BASE_URL = process.env.NEXT_PUBLIC_API_URL;
 

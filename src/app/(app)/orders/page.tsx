@@ -1,3 +1,7 @@
+import { format } from "date-fns";
+import type { Metadata } from "next";
+import { cookies } from "next/headers";
+import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
 import {
 	Card,
@@ -17,10 +21,6 @@ import {
 } from "@/components/ui/table";
 import { api } from "@/lib/config";
 import type { Order } from "@/types";
-import { format } from "date-fns";
-import type { Metadata } from "next";
-import { cookies } from "next/headers";
-import Link from "next/link";
 
 export const metadata: Metadata = {
 	title: "Your Orders - Pizza Galleria	",
@@ -51,7 +51,7 @@ const OrderPage = async ({
 }: {
 	searchParams: Promise<{ restaurantId: string }>;
 }) => {
-	const { restaurantId } = await searchParams;
+	// const { restaurantId } = await searchParams;
 
 	const orders = await fetchOrders();
 

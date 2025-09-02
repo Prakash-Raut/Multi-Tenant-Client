@@ -1,8 +1,8 @@
+import type { Metadata } from "next";
+import { redirect } from "next/navigation";
 import CustomerDetail from "@/components/checkout/customer-detail";
 import { getSession } from "@/lib/session";
 import { sanitizeParams } from "@/lib/utils";
-import type { Metadata } from "next";
-import { redirect } from "next/navigation";
 
 export const metadata: Metadata = {
 	title: "Checkout - Pizza Galleria",

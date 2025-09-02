@@ -1,7 +1,13 @@
 "use client";
 
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { Coins, CreditCard } from "lucide-react";
+import { useSearchParams } from "next/navigation";
+import { useEffect, useRef } from "react";
+import { useForm } from "react-hook-form";
 import { v4 as uuidv4 } from "uuid";
-
+import { z } from "zod";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
 	Form,
@@ -19,13 +25,6 @@ import { createOrder, getCustomer } from "@/lib/http/api";
 import { clearCart } from "@/lib/store/features/cart/cartSlice";
 import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
 import type { Address, Customer, OrderData, PaymentMode } from "@/types";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation, useQuery } from "@tanstack/react-query";
-import { Coins, CreditCard } from "lucide-react";
-import { useSearchParams } from "next/navigation";
-import { useEffect, useRef } from "react";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
 import { AddressModal } from "./address-modal";
 import OrderSummary from "./order-summary";
 

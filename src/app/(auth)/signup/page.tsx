@@ -1,8 +1,8 @@
-import { SignUpForm } from "@/components/auth/signup-form";
-import Logo from "@/components/icons/logo";
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
+import { SignUpForm } from "@/components/auth/signup-form";
+import Logo from "@/components/icons/logo";
 
 export const metadata: Metadata = {
 	title: "Create Your Pizza Galleria Account",

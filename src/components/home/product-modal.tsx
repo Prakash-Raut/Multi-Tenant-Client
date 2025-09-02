@@ -1,5 +1,9 @@
 "use client";
 
+import { ShoppingCart } from "lucide-react";
+import Image from "next/image";
+import { Suspense, startTransition, useMemo, useState } from "react";
+import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import {
 	Dialog,
@@ -11,14 +15,10 @@ import {
 } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { type CartItem, addToCart } from "@/lib/store/features/cart/cartSlice";
+import { addToCart, type CartItem } from "@/lib/store/features/cart/cartSlice";
 import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
 import { cn, hashTheItem } from "@/lib/utils";
 import type { Product, Topping } from "@/types";
-import { ShoppingCart } from "lucide-react";
-import Image from "next/image";
-import { Suspense, startTransition, useMemo, useState } from "react";
-import { toast } from "sonner";
 import FallBackSkeleton from "./fallback-skeleton";
 import ToppingList from "./topping-list";
 

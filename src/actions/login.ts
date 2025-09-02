@@ -1,8 +1,8 @@
 "use server";
 
-import { api } from "@/lib/config";
 import * as cookie from "cookie";
 import { cookies } from "next/headers";
+import { api } from "@/lib/config";
 
 export default async function login(
 	prevState: Record<string, unknown>,

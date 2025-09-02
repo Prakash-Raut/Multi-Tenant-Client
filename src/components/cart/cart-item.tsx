@@ -1,14 +1,14 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
-import { useTotal } from "@/lib/hooks/useTotal";
-import {
-	type CartItem as Item,
-	changeQty,
-} from "@/lib/store/features/cart/cartSlice";
-import { useAppDispatch } from "@/lib/store/hooks";
 import { X } from "lucide-react";
 import Image from "next/image";
+import { Button } from "@/components/ui/button";
+import { useTotal } from "@/hooks/useTotal";
+import {
+	changeQty,
+	type CartItem as Item,
+} from "@/lib/store/features/cart/cartSlice";
+import { useAppDispatch } from "@/lib/store/hooks";
 import QtyChanger from "./qty-changer";
 
 const CartItem = ({ item }: { item: Item }) => {

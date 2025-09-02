@@ -1,12 +1,12 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
-import { useAppSelector } from "@/lib/store/hooks";
-import { getItemTotal } from "@/lib/utils";
 import { ArrowRight, ShoppingCart } from "lucide-react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
+import { Button } from "@/components/ui/button";
+import { useAppSelector } from "@/lib/store/hooks";
+import { getItemTotal } from "@/lib/utils";
 import CartItem from "./cart-item";
 
 const CartItems = () => {

@@ -1,7 +1,7 @@
-import { api } from "@/lib/config";
 import * as cookie from "cookie";
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
+import { api } from "@/lib/config";
 
 export async function POST() {
 	try {

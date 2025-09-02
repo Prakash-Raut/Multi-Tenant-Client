@@ -1,10 +1,9 @@
-import Refresher from "@/components/navigation/refresher";
-import { Toaster } from "@/components/ui/sonner";
-import AmplitudeContextProvider from "@/lib/providers/AmplitudeProvider";
-import QueryProvider from "@/lib/providers/QueryProvider";
-import StoreProvider from "@/lib/providers/StoreProvider";
 import type { Metadata } from "next";
 import { Manrope } from "next/font/google";
+import Refresher from "@/components/navigation/refresher";
+import { Toaster } from "@/components/ui/sonner";
+import QueryProvider from "@/lib/providers/QueryProvider";
+import StoreProvider from "@/lib/providers/StoreProvider";
 import "./globals.css";
 
 const manrope = Manrope({
@@ -30,15 +29,13 @@ export default function RootLayout({
 		<html lang="en">
 			<StoreProvider>
 				<body className={`${manrope.variable} antialiased`}>
-					<AmplitudeContextProvider>
-						<QueryProvider>
-							<Refresher>
-								<main className="container mx-auto flex flex-col items-center justify-between">
-									{children}
-								</main>
-							</Refresher>
-						</QueryProvider>
-					</AmplitudeContextProvider>
+					<QueryProvider>
+						<Refresher>
+							<main className="container mx-auto flex flex-col items-center justify-between">
+								{children}
+							</main>
+						</Refresher>
+					</QueryProvider>
 					<Toaster richColors />
 				</body>
 			</StoreProvider>

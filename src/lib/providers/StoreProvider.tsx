@@ -1,9 +1,9 @@
 "use client";
 
-import { setInitialCartItems } from "@/lib/store/features/cart/cartSlice";
-import { type AppStore, makeStore } from "@/lib/store/store";
 import { useRef } from "react";
 import { Provider } from "react-redux";
+import { setInitialCartItems } from "@/lib/store/features/cart/cartSlice";
+import { type AppStore, makeStore } from "@/lib/store/store";
 
 export default function StoreProvider({
 	children,

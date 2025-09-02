@@ -1,5 +1,5 @@
-import Header from "@/components/navigation/header";
 import type React from "react";
+import Header from "@/components/navigation/header";
 
 const AppLayout = ({
 	children,

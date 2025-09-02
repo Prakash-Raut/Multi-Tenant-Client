@@ -1,7 +1,7 @@
+import Image from "next/image";
 import { Card, CardContent } from "@/components/ui/card";
 import { getFromPrice } from "@/lib/utils";
 import type { Product } from "@/types";
-import Image from "next/image";
 import ProductModal from "./product-modal";
 
 type PropTypes = { product: Product };

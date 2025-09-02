@@ -1,9 +1,5 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
-import { Separator } from "@/components/ui/separator";
-import { getSingleOrder } from "@/lib/http/api";
-import { cn } from "@/lib/utils";
 import { defineStepper } from "@stepperize/react";
 import { useQuery } from "@tanstack/react-query";
 import {
@@ -14,6 +10,10 @@ import {
 	PackageCheck,
 } from "lucide-react";
 import { useEffect, useMemo, useRef } from "react";
+import { Button } from "@/components/ui/button";
+import { Separator } from "@/components/ui/separator";
+import { getSingleOrder } from "@/lib/http/api";
+import { cn } from "@/lib/utils";
 
 const { Scoped, useStepper, steps, utils } = defineStepper(
 	{

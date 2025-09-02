@@ -1,9 +1,9 @@
-import { LoginForm } from "@/components/auth/login-form";
-import Logo from "@/components/icons/logo";
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { Suspense } from "react";
+import { LoginForm } from "@/components/auth/login-form";
+import Logo from "@/components/icons/logo";
 
 export const metadata: Metadata = {
 	title: "Login to Pizza Galleria",

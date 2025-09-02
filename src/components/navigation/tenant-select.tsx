@@ -1,5 +1,6 @@
 "use client";
 
+import { useRouter, useSearchParams } from "next/navigation";
 import {
 	Select,
 	SelectContent,
@@ -8,7 +9,6 @@ import {
 	SelectValue,
 } from "@/components/ui/select";
 import type { Tenant } from "@/types";
-import { useRouter, useSearchParams } from "next/navigation";
 
 const TenantSelect = ({ resturants }: { resturants: { data: Tenant[] } }) => {
 	const router = useRouter();

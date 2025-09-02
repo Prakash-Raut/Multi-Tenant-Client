@@ -1,13 +1,13 @@
 "use client";
 
+import { Loader2 } from "lucide-react";
+import Link from "next/link";
+import { useActionState } from "react";
 import signup from "@/actions/signup";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
-import { Loader2 } from "lucide-react";
-import Link from "next/link";
-import { useActionState } from "react";
 
 const initialState = {
 	type: "",

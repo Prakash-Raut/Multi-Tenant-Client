@@ -1,6 +1,6 @@
+import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 import { hashTheItem } from "@/lib/utils";
 import type { Product, Topping } from "@/types";
-import { type PayloadAction, createSlice } from "@reduxjs/toolkit";
 
 export interface CartItem
 	extends Pick<Product, "_id" | "name" | "image" | "priceConfiguration"> {

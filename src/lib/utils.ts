@@ -1,7 +1,7 @@
-import type { Product } from "@/types";
 import { type ClassValue, clsx } from "clsx";
 import CryptoJs from "crypto-js";
 import { twMerge } from "tailwind-merge";
+import type { Product } from "@/types";
 import type { CartItem } from "./store/features/cart/cartSlice";
 
 export function cn(...inputs: ClassValue[]) {

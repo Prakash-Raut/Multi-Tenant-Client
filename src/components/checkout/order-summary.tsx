@@ -1,5 +1,10 @@
 "use client";
 
+import { useMutation } from "@tanstack/react-query";
+import axios from "axios";
+import { Loader2 } from "lucide-react";
+import { useSearchParams } from "next/navigation";
+import { useMemo, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
 	Card,
@@ -13,11 +18,6 @@ import { verifyCoupon } from "@/lib/http/api";
 import { useAppSelector } from "@/lib/store/hooks";
 import { getItemTotal } from "@/lib/utils";
 import type { CouponCodeData } from "@/types";
-import { useMutation } from "@tanstack/react-query";
-import axios from "axios";
-import { Loader2 } from "lucide-react";
-import { useSearchParams } from "next/navigation";
-import { useMemo, useRef, useState } from "react";
 
 const OrderSummary = ({
 	handleCouponCodeChange,

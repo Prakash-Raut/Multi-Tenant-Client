@@ -1,7 +1,7 @@
 "use server";
 
-import { api } from "@/lib/config";
 import { cookies } from "next/headers";
+import { api } from "@/lib/config";
 
 export const logout = async () => {
 	const cookieStore = await cookies();
