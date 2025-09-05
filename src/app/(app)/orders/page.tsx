@@ -23,27 +23,30 @@ import { api } from "@/lib/config";
 import type { Order } from "@/types";
 
 export const metadata: Metadata = {
-	title: "Your Orders - Pizza Galleria	",
+	title: "Your Orders - Pizza Galleria",
 	description:
 		"Access your past Pizza Galleria orders, reorder your favorites, and track current deliveries from your order history.",
 };
 
 const fetchOrders = async () => {
-	const cookieStore = await cookies();
-	const accessToken = cookieStore.get("accessToken")?.value;
-	const response = await fetch(`${api}/api/order/orders/me`, {
-		headers: {
-			Authorization: `Bearer ${accessToken}`,
-		},
-	});
+	try {
+		const cookieStore = await cookies();
+		const accessToken = cookieStore.get("accessToken")?.value;
+		const response = await fetch(`${api}/api/order/orders/me`, {
+			headers: {
+				Authorization: `Bearer ${accessToken}`,
+			},
+		});
 
-	if (!response.ok) {
-		throw new Error("Failed to fetch orders");
+		if (!response.ok) return [];
+
+		const orders: Order[] = (await response.json()) || [];
+
+		return orders;
+	} catch (error) {
+		console.error("Failed to fetch orders", error);
+		return [];
 	}
-
-	const orders: Order[] = (await response.json()) || [];
-
-	return orders;
 };
 
 const OrderPage = async ({
@@ -56,7 +59,7 @@ const OrderPage = async ({
 	const orders = await fetchOrders();
 
 	return (
-		<section>
+		<section className="mt-10">
 			<Card>
 				<CardHeader>
 					<CardTitle>Orders</CardTitle>
@@ -79,37 +82,43 @@ const OrderPage = async ({
 							</TableRow>
 						</TableHeader>
 						<TableBody>
-							{orders.length === 0
-								? "No orders found"
-								: orders.map((order) => (
-										<TableRow key={order._id}>
-											<TableCell className="font-medium">{order._id}</TableCell>
-											<TableCell className="uppercase">
-												<Badge variant="secondary">{order.paymentStatus}</Badge>
-											</TableCell>
-											<TableCell className="capitalize">
-												{order.paymentMode}
-											</TableCell>
-											<TableCell>
-												{format(
-													new Date(order.createdAt),
-													"dd-MM-yyyy HH:mm:ss",
-												)}
-											</TableCell>
-											<TableCell className="uppercase">
-												<Badge variant="secondary">{order.orderStatus}</Badge>
-											</TableCell>
-											<TableCell>&#8377;{order.total}</TableCell>
-											<TableCell className="text-right">
-												<Link
-													href={`/order/${order._id}`}
-													className="text-primary underline"
-												>
-													More Details
-												</Link>
-											</TableCell>
-										</TableRow>
-									))}
+							{orders.length === 0 ? (
+								<TableRow>
+									<TableCell
+										colSpan={7}
+										className="text-center text-muted-foreground"
+									>
+										No orders found
+									</TableCell>
+								</TableRow>
+							) : (
+								orders.map((order) => (
+									<TableRow key={order._id}>
+										<TableCell className="font-medium">{order._id}</TableCell>
+										<TableCell className="uppercase">
+											<Badge variant="secondary">{order.paymentStatus}</Badge>
+										</TableCell>
+										<TableCell className="capitalize">
+											{order.paymentMode}
+										</TableCell>
+										<TableCell>
+											{format(new Date(order.createdAt), "dd-MM-yyyy HH:mm:ss")}
+										</TableCell>
+										<TableCell className="uppercase">
+											<Badge variant="secondary">{order.orderStatus}</Badge>
+										</TableCell>
+										<TableCell>&#8377;{order.total}</TableCell>
+										<TableCell className="text-right">
+											<Link
+												href={`/order/${order._id}`}
+												className="text-primary underline"
+											>
+												More Details
+											</Link>
+										</TableCell>
+									</TableRow>
+								))
+							)}
 						</TableBody>
 					</Table>
 				</CardContent>
