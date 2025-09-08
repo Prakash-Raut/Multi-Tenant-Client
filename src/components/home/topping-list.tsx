@@ -16,7 +16,7 @@ const ToppingList = ({
 	handleSelectTopping,
 }: ToppingListProps) => {
 	const searchParams = useSearchParams();
-	const tenantId = searchParams.get("restaurantId");
+	const tenantId = searchParams.get("restaurantId") ?? 1;
 	const [toppings, setToppings] = useState<Topping[]>([]);
 
 	useEffect(() => {
@@ -33,7 +33,7 @@ const ToppingList = ({
 	return (
 		<section className="mt-6">
 			<h4>Extra Toppings</h4>
-			<div className="mt-2 grid grid-cols-3 gap-4">
+			<div className="mt-2 flex flex-wrap gap-4 w-full bg-red-50">
 				{toppings.map((topping) => (
 					<ToppingCard
 						key={topping._id}

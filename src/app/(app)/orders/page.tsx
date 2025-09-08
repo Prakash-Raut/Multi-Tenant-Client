@@ -40,7 +40,7 @@ const fetchOrders = async () => {
 
 		if (!response.ok) return [];
 
-		const orders: Order[] = (await response.json()) || [];
+		const orders: Order[] = (await response.json()).data || [];
 
 		return orders;
 	} catch (error) {

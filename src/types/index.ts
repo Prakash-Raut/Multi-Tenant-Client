@@ -83,8 +83,8 @@ export type CouponCodeData = {
 };
 
 export enum PaymentMode {
-	CARD = "card",
-	CASH = "cash",
+	CARD = "CARD",
+	CASH = "CASH",
 }
 
 export enum OrderStatus {

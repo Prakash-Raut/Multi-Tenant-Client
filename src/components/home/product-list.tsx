@@ -36,7 +36,7 @@ const ProductList = async ({
 }) => {
 	const { restaurantId } = await searchParams;
 
-	const { categories, products } = await fetchMenuData(restaurantId);
+	const { categories, products } = await fetchMenuData(restaurantId ?? 1);
 
 	if (categories.length === 0) {
 		return (
@@ -50,7 +50,7 @@ const ProductList = async ({
 	return (
 		<section className="container mx-auto flex flex-col items-center justify-between px-24 py-4 mt-10">
 			<h2 className="text-3xl font-bold text-center mb-10">Our Menu</h2>
-			<Tabs defaultValue={categories[1]._id} className="w-full h-screen">
+			<Tabs defaultValue={categories[1]._id} className="mb-4">
 				<TabsList className="grid w-full max-w-md mx-auto grid-cols-2 mb-8">
 					{categories.map((category: Category) => (
 						<TabsTrigger
@@ -69,7 +69,7 @@ const ProductList = async ({
 					return (
 						<TabsContent key={category._id} value={category._id}>
 							{filteredProducts.length === 0 ? (
-								<p className="text-center text-muted-foreground mt-6">
+								<p className="text-center text-muted-foreground mt-6 h-[450px]">
 									No products in this category.
 								</p>
 							) : (

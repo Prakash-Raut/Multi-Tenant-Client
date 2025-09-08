@@ -89,7 +89,7 @@ export const LoginForm = ({
 									name="email"
 									type="email"
 									placeholder="m@example.com"
-									defaultValue="mike_ross@email.com"
+									defaultValue="arun@email.com"
 									required
 								/>
 							</div>
@@ -108,7 +108,7 @@ export const LoginForm = ({
 									name="password"
 									type="password"
 									required
-									defaultValue="mike@091"
+									defaultValue="arun@2001"
 								/>
 							</div>
 							<p

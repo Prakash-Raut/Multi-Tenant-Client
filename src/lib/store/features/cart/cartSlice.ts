@@ -1,3 +1,5 @@
+"use client";
+
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 import { hashTheItem } from "@/lib/utils";
 import type { Product, Topping } from "@/types";

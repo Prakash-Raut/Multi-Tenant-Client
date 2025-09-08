@@ -30,7 +30,7 @@ import OrderSummary from "./order-summary";
 
 const customerSchema = z.object({
 	address: z.string({ required_error: "Address is required." }),
-	paymentMode: z.enum(["card", "cash"], {
+	paymentMode: z.enum(["CARD", "CASH"], {
 		required_error: "You must select a payment mode.",
 	}),
 	comment: z.string().max(200, {
@@ -55,7 +55,7 @@ const CustomerDetail = () => {
 		resolver: zodResolver(customerSchema),
 		defaultValues: {
 			address: "",
-			paymentMode: "card",
+			paymentMode: "CARD",
 			comment: "",
 		},
 	});
@@ -67,7 +67,7 @@ const CustomerDetail = () => {
 	const dispatch = useAppDispatch();
 
 	useEffect(() => {
-		idempotencyKeyRef.current = uuidv4() + (customer?._id || "");
+		idempotencyKeyRef.current = uuidv4() + (customer?._id ?? "");
 	}, [customer?._id]);
 
 	const { mutate: createOrderMutate, isPending: isPlaceOrderPending } =
@@ -212,7 +212,7 @@ const CustomerDetail = () => {
 												<FormControl>
 													<RadioGroupItem
 														id="card"
-														value="card"
+														value="CARD"
 														className="peer sr-only"
 														aria-label="Card"
 													/>
@@ -229,7 +229,7 @@ const CustomerDetail = () => {
 												<FormControl>
 													<RadioGroupItem
 														id="cash"
-														value="cash"
+														value="CASH"
 														className="peer sr-only"
 														aria-label="Cash"
 													/>

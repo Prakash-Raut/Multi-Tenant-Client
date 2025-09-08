@@ -22,7 +22,7 @@ const ToppingCard = ({
 		<Button
 			variant="outline"
 			className={cn(
-				"relative flex h-52 flex-col items-center",
+				"relative flex h-40 w-32 flex-col items-center",
 				isCurrentSelected && "border-2 border-primary",
 			)}
 			onClick={() => handleSelectTopping(topping)}

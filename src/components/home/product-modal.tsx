@@ -19,6 +19,7 @@ import { addToCart, type CartItem } from "@/lib/store/features/cart/cartSlice";
 import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
 import { cn, hashTheItem } from "@/lib/utils";
 import type { Product, Topping } from "@/types";
+import { ScrollArea } from "../ui/scroll-area";
 import FallBackSkeleton from "./fallback-skeleton";
 import ToppingList from "./topping-list";
 
@@ -130,77 +131,81 @@ const ProductModal = ({ product }: { product: Product }) => {
 				</Button>
 			</DialogTrigger>
 			<DialogContent className="max-w-3xl">
-				<div className="flex items-center justify-between gap-4">
-					<div className="w-1/3">
+				<div className="flex items-center justify-between gap-4 w-full">
+					<div className="w-2/5">
 						<Image
 							src={product.image}
 							alt={product.name}
-							width={450}
-							height={450}
+							width={500}
+							height={500}
 						/>
 					</div>
-					<div className="w-2/3">
-						<DialogHeader>
-							<DialogTitle>{product.name}</DialogTitle>
-							<DialogDescription>{product.description}</DialogDescription>
-						</DialogHeader>
-						{Object.entries(product.category.priceConfiguration).map(
-							([key, value]) => (
-								<div key={key}>
-									<h4 className="mt-6">{key}</h4>
-									<RadioGroup
-										defaultValue={value.availableOptions[0]}
-										onValueChange={(value) => {
-											handleRadioChange(key, value);
-										}}
-										className="mt-2 grid grid-cols-3 gap-4"
-									>
-										{value.availableOptions.map((option) => (
-											<div key={option}>
-												<RadioGroupItem
-													id={option}
-													value={option}
-													className="peer sr-only"
-													aria-label={option}
-												/>
-												<Label
-													htmlFor={option}
-													className="flex flex-col items-center justify-between rounded-md border-2 bg-popover p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary"
-												>
-													{option}
-												</Label>
-											</div>
-										))}
-									</RadioGroup>
-								</div>
-							),
-						)}
-						{/* TODO: Make this condition dynamic (add hasTopping in Backend Category Route) */}
-						{product.category.name === "Pizza" && (
-							<Suspense fallback={<FallBackSkeleton />}>
-								<ToppingList
-									selectedToppings={selectedToppings}
-									handleSelectTopping={handleSelectTopping}
-								/>
-							</Suspense>
-						)}
-						<div className="mt-12 flex items-center justify-between">
-							<span className="text-lg font-bold">
-								&#8377;
-								{totalPrice}
-							</span>
-							<Button
-								className={cn(alreadyHasInCart ? "bg-gray-700" : "bg-primary")}
-								onClick={() => handleAddToCart(product)}
-								disabled={alreadyHasInCart}
-							>
-								<ShoppingCart size={20} />
-								<span>
-									{alreadyHasInCart ? "Already in cart" : "Add to cart"}
+					<ScrollArea className="h-[500px]">
+						<div className="w-3/5">
+							<DialogHeader>
+								<DialogTitle>{product.name}</DialogTitle>
+								<DialogDescription>{product.description}</DialogDescription>
+							</DialogHeader>
+							{Object.entries(product.category.priceConfiguration).map(
+								([key, value]) => (
+									<div key={key}>
+										<h4 className="mt-6">{key}</h4>
+										<RadioGroup
+											defaultValue={value.availableOptions[0]}
+											onValueChange={(value) => {
+												handleRadioChange(key, value);
+											}}
+											className="mt-2 grid grid-cols-3 gap-4"
+										>
+											{value.availableOptions.map((option) => (
+												<div key={option}>
+													<RadioGroupItem
+														id={option}
+														value={option}
+														className="peer sr-only"
+														aria-label={option}
+													/>
+													<Label
+														htmlFor={option}
+														className="flex flex-col items-center justify-between rounded-md border-2 bg-popover p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary"
+													>
+														{option}
+													</Label>
+												</div>
+											))}
+										</RadioGroup>
+									</div>
+								),
+							)}
+							{/* TODO: Make this condition dynamic (add hasTopping in Backend Category Route) */}
+							{product.category.name === "Pizza" && (
+								<Suspense fallback={<FallBackSkeleton />}>
+									<ToppingList
+										selectedToppings={selectedToppings}
+										handleSelectTopping={handleSelectTopping}
+									/>
+								</Suspense>
+							)}
+							<div className="mt-12 flex items-center justify-between">
+								<span className="text-lg font-bold">
+									&#8377;
+									{totalPrice}
 								</span>
-							</Button>
+								<Button
+									className={cn(
+										alreadyHasInCart ? "bg-gray-700" : "bg-primary",
+									)}
+									onClick={() => handleAddToCart(product)}
+									disabled={alreadyHasInCart}
+								>
+									<ShoppingCart size={20} />
+									<span>
+										{alreadyHasInCart ? "Already in cart" : "Add to cart"}
+									</span>
+								</Button>
+							</div>
 						</div>
-					</div>
+					</ScrollArea>
 				</div>
 			</DialogContent>
 		</Dialog>
