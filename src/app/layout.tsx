@@ -15,8 +15,6 @@ export const metadata: Metadata = {
 	title: "Pizza Galleria - Order Pizza Online",
 	icons: {
 		icon: "/favicon.ico",
-		shortcut: "/favicon-32x32.png",
-		apple: "/apple-touch-icon.png",
 	},
 };
 

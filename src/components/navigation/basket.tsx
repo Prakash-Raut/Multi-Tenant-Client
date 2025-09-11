@@ -7,7 +7,7 @@ import { useAppSelector } from "@/lib/store/hooks";
 
 const Basket = () => {
 	const searchParams = useSearchParams();
-	const restaurantId = searchParams.get("restaurantId");
+	const restaurantId = searchParams.get("restaurantId") ?? "1";
 	const cartItems = useAppSelector((state) => state.cart.cartItems);
 	return (
 		<div className="relative">

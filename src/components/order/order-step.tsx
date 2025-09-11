@@ -55,7 +55,7 @@ const OrderStep = ({ orderId }: { orderId: string }) => {
 		queryKey: ["order"],
 		queryFn: async () => {
 			const { data } = await getSingleOrder(orderId);
-			return data;
+			return data.data;
 		},
 		refetchInterval: 1000 * 30, // Refetch every 30 seconds
 	});

@@ -19,10 +19,14 @@ const fetchMenuData = async (restaurantId: string) => {
 			return { categories: [], products: [] };
 		}
 
-		const categories: Category[] = await categoryResponse.json();
-		const products: { data: Product[] } = await productResponse.json();
+		const { data: categories } = (await categoryResponse.json()) as {
+			data: Category[];
+		};
+		const { data: products } = (await productResponse.json()) as {
+			data: Product[];
+		};
 
-		return { categories, products: products.data };
+		return { categories, products };
 	} catch (err) {
 		console.error("Error fetching menu:", err);
 		return { categories: [], products: [] };

@@ -25,7 +25,7 @@ const Header = async () => {
 		throw new Error("Failed to fetch tenants");
 	}
 
-	const tenants: { data: Tenant[] } = await tenantResponse.json();
+	const { data: tenants } = await tenantResponse.json();
 
 	return (
 		<header className="sticky top-0 z-50 px-24 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 mb-4">

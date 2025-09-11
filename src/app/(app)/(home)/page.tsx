@@ -12,7 +12,7 @@ export const metadata: Metadata = {
 		"Welcome to Pizza Galleria! Explore our menu, discover exclusive deals, and order your favorite pizzas online with ease.",
 };
 
-export default function Home({
+export default async function Home({
 	searchParams,
 }: {
 	searchParams: Promise<{ restaurantId: string }>;

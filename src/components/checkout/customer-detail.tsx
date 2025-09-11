@@ -47,7 +47,7 @@ const CustomerDetail = () => {
 		queryKey: ["customer"],
 		queryFn: async () => {
 			const { data } = await getCustomer();
-			return data;
+			return data.data;
 		},
 	});
 
