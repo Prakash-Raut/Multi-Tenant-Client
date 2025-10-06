@@ -8,10 +8,7 @@ export const getAccessToken = async (): Promise<string | null> => {
 		const response = await fetch("/api/auth/accessToken");
 
 		if (!response.ok) {
-			console.error(
-				"Access token request failed with status:",
-				response.status,
-			);
+			console.log("Access token request failed with status:", response.status);
 			return null;
 		}
 
@@ -19,7 +16,7 @@ export const getAccessToken = async (): Promise<string | null> => {
 
 		return token;
 	} catch (error) {
-		console.error("Failed to get access token", error);
+		console.log("Failed to get access token", error);
 		return null;
 	}
 };
@@ -35,13 +32,13 @@ export const startRefresh = async (
 		let accessToken = await getAccessToken();
 
 		if (!accessToken) {
-			console.error("No access token found. Attempting to refresh.");
+			console.log("No access token found. Attempting to refresh.");
 			accessToken = await refreshAccessToken();
 		}
 
 		// If still no access token, stop refresh cycle
 		if (!accessToken) {
-			console.error(
+			console.log(
 				"No access token available after refresh attempt. Stopping refresh cycle.",
 			);
 			return;
@@ -70,7 +67,7 @@ export const startRefresh = async (
 			refreshAccessToken();
 		}, refreshTime);
 	} catch (error) {
-		console.error("Failed to start refresh", error);
+		console.log("Failed to start refresh", error);
 	}
 };
 
@@ -81,14 +78,14 @@ export const refreshAccessToken = async () => {
 		});
 
 		if (!response.ok) {
-			console.error("Failed to refresh access token", response.status);
+			console.log("Failed to refresh access token", response.status);
 			return;
 		}
 
 		const { token } = await response.json();
 
 		if (!token) {
-			console.error("No token received after refresh.");
+			console.log("No token received after refresh.");
 			return;
 		}
 
@@ -96,6 +93,6 @@ export const refreshAccessToken = async () => {
 
 		return token;
 	} catch (error) {
-		console.error("Failed to refresh access token", error);
+		console.log("Failed to refresh access token", error);
 	}
 };

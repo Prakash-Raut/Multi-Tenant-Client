@@ -36,9 +36,9 @@ const fetchOrder = async (orderId: string) => {
 		throw new Error("An error occurred while fetching the order.");
 	}
 
-	const data: Order = await response.json();
+	const data = await response.json();
 
-	return data;
+	return data.data as Order;
 };
 
 const OrderDetailPage = async ({

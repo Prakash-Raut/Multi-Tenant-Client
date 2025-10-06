@@ -40,9 +40,9 @@ const fetchOrders = async () => {
 
 		if (!response.ok) return [];
 
-		const orders: Order[] = (await response.json()).data || [];
+		const orders = (await response.json()).data || [];
 
-		return orders;
+		return orders.data as Order[];
 	} catch (error) {
 		console.error("Failed to fetch orders", error);
 		return [];

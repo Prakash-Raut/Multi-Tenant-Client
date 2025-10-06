@@ -25,7 +25,7 @@ const ToppingList = ({
 				`${api}/api/catalog/toppings?tenantId=${tenantId}`,
 			);
 			const toppingsData = await toppingResponse.json();
-			setToppings(toppingsData);
+			setToppings(toppingsData.data);
 		};
 		fetchToppings();
 	}, [tenantId]);

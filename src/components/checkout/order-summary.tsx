@@ -83,7 +83,7 @@ const OrderSummary = ({
 				tenantId: +restaurantId,
 			};
 			const { data } = await verifyCoupon(couponCodeData);
-			return data.data;
+			return data;
 		},
 		onSuccess: (data) => {
 			if (data.valid) {

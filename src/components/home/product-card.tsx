@@ -14,6 +14,8 @@ const ProductCard = ({ product }: PropTypes) => {
 					<Image
 						src={product.image}
 						alt={product.name}
+						// width={200}
+						// height={200}
 						sizes="200px"
 						fill
 						className="object-cover"
