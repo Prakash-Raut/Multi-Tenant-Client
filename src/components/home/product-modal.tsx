@@ -31,9 +31,15 @@ const ProductModal = ({ product }: { product: Product }) => {
 	const [isModalOpen, setIsModalOpen] = useState(false);
 	const dispatch = useAppDispatch();
 	const cartItems = useAppSelector((state) => state.cart.cartItems);
-	const defaultConfig = Object.entries(product.category.priceConfiguration)
-		.map(([key, value]) => ({ [key]: value.availableOptions[0] }))
-		.reduce((acc, curr) => Object.assign(acc, curr), {});
+	const defaultConfig = Object.entries(
+		product.category.priceConfiguration,
+	).reduce(
+		(acc, [key, value]) => {
+			acc[key] = value.availableOptions[0];
+			return acc;
+		},
+		{} as Record<string, string>,
+	);
 
 	const [chosenConfig, setChosenConfig] = useState<ChosenConfig>(
 		defaultConfig as unknown as ChosenConfig,

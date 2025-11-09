@@ -35,7 +35,7 @@ const OrderSummary = ({
 
 	const [discountError, setDiscountError] = useState<string | null>(null);
 
-	const [taxesPercentage, setTaxesPercentage] = useState(18);
+	const [taxesPercentage, _setTaxesPercentage] = useState(18);
 
 	const couponCodeRef = useRef<HTMLInputElement>(null);
 

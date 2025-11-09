@@ -2,7 +2,6 @@ import { Phone, User } from "lucide-react";
 import Link from "next/link";
 import { api } from "@/lib/config";
 import { getSession } from "@/lib/session";
-import type { Tenant } from "@/types";
 import Logo from "../icons/logo";
 import { Button } from "../ui/button";
 import Logout from "./logout";

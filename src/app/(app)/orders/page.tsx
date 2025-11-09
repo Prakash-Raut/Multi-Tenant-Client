@@ -49,11 +49,11 @@ const fetchOrders = async () => {
 	}
 };
 
-const OrderPage = async ({
-	searchParams,
-}: {
-	searchParams: Promise<{ restaurantId: string }>;
-}) => {
+// type Props = {
+// 	searchParams: Promise<{ restaurantId: string }>;
+// };
+
+const OrderPage = async () => {
 	// const { restaurantId } = await searchParams;
 
 	const orders = await fetchOrders();
