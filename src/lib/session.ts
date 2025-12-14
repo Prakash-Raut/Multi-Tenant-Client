@@ -19,18 +19,27 @@ export const getSession = async () => {
 };
 
 export const getSelf = async (): Promise<Session | null> => {
-	const response = await fetch(`${api}/api/auth/auth/self`, {
-		method: "GET",
-		headers: {
-			Authorization: `Bearer ${(await cookies()).get("accessToken")?.value}`,
-		},
-	});
+	try {
+		const token = (await cookies()).get("accessToken")?.value;
+		if (!token) {
+			return null;
+		}
+		const response = await fetch(`${api}/api/auth/auth/self`, {
+			method: "GET",
+			headers: {
+				Authorization: `Bearer ${token}`,
+			},
+			cache: "no-store",
+		});
 
-	if (!response.ok) {
+		if (!response.ok) {
+			return null;
+		}
+
+		const user = (await response.json()) as User;
+		return { user };
+	} catch (_error) {
+		// console.error("Failed to get self", error);
 		return null;
 	}
-
-	return {
-		user: (await response.json()) as User,
-	};
 };

@@ -1,4 +1,5 @@
 import type React from "react";
+import { Suspense } from "react";
 import Header from "@/components/navigation/header";
 
 const AppLayout = ({
@@ -8,7 +9,9 @@ const AppLayout = ({
 }>) => {
 	return (
 		<main className="container mx-auto flex flex-col items-center justify-between">
-			<Header />
+			<Suspense fallback={<div>Loading...</div>}>
+				<Header />
+			</Suspense>
 			{children}
 		</main>
 	);

@@ -42,7 +42,7 @@ const ProductList = async ({
 
 	const { categories, products } = await fetchMenuData(restaurantId ?? 1);
 
-	if (categories.length === 0) {
+	if (!categories.length || !products.length) {
 		return (
 			<section className="container mx-auto px-24 py-10 text-center">
 				<h2 className="text-2xl font-bold mb-4">Our Menu</h2>

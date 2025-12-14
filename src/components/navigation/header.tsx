@@ -2,36 +2,48 @@ import { Phone, User } from "lucide-react";
 import Link from "next/link";
 import { api } from "@/lib/config";
 import { getSession } from "@/lib/session";
+import type { Tenant } from "@/types";
 import Logo from "../icons/logo";
 import { Button } from "../ui/button";
 import Logout from "./logout";
 import NavRight from "./nav-right";
 import TenantSelect from "./tenant-select";
 
+const fetchTenants = async () => {
+	try {
+		const tenantResponse = await fetch(
+			`${api}/api/auth/tenants?perPage=100&currentPage=1`,
+			{
+				next: {
+					revalidate: 3600, // 1 hour
+				},
+			},
+		);
+
+		if (!tenantResponse.ok) {
+			return { data: [] };
+		}
+
+		const { data: tenants } = (await tenantResponse.json()) as {
+			data: Tenant[];
+		};
+		return tenants;
+	} catch (error) {
+		console.log("Failed to fetch tenants", error);
+		return { data: [] };
+	}
+};
+
 const Header = async () => {
 	const session = await getSession();
-
-	const tenantResponse = await fetch(
-		`${api}/api/auth/tenants?perPage=100&currentPage=1`,
-		{
-			next: {
-				revalidate: 3600, // 1 hour
-			},
-		},
-	);
-
-	if (!tenantResponse.ok) {
-		throw new Error("Failed to fetch tenants");
-	}
-
-	const { data: tenants } = await tenantResponse.json();
+	const tenants = await fetchTenants();
 
 	return (
-		<header className="sticky top-0 z-50 px-24 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 mb-4">
+		<header className="sticky top-0 z-50 px-24 w-full border-b bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/60 mb-4">
 			<div className="container flex h-16 items-center justify-between">
 				<div className="flex items-center gap-4">
 					<Logo />
-					<TenantSelect resturants={tenants} />
+					<TenantSelect resturants={tenants as { data: Tenant[] }} />
 				</div>
 				<div className="flex items-center gap-4">
 					<nav className="hidden md:flex items-center gap-6">

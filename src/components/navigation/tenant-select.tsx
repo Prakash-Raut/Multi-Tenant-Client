@@ -27,7 +27,7 @@ const TenantSelect = ({ resturants }: { resturants: { data: Tenant[] } }) => {
 				<SelectValue placeholder="Select Outlet" />
 			</SelectTrigger>
 			<SelectContent>
-				{resturants.data.map((restaurant) => (
+				{resturants.data?.map((restaurant) => (
 					<SelectItem key={restaurant.id} value={String(restaurant.id)}>
 						{restaurant.name}
 					</SelectItem>

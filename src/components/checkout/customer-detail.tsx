@@ -29,9 +29,9 @@ import { AddressModal } from "./address-modal";
 import OrderSummary from "./order-summary";
 
 const customerSchema = z.object({
-	address: z.string({ required_error: "Address is required." }),
+	address: z.string().min(1, "Address is required."),
 	paymentMode: z.enum(["CARD", "CASH"], {
-		required_error: "You must select a payment mode.",
+		message: "Invalid payment mode.",
 	}),
 	comment: z.string().max(200, {
 		message: "Comment must be less than 200 characters.",

@@ -20,8 +20,8 @@ export default async function Home({
 	return (
 		<>
 			<section className="flex w-full items-center justify-between px-24 py-6">
-				<div>
-					<h1 className="leading-2 text-7xl font-black">
+				<div className="space-y-2">
+					<h1 className="leading-tight text-7xl font-black">
 						Delicious Pizza in <br />
 						<span className="text-primary">Only 45 Minutes!</span>
 					</h1>

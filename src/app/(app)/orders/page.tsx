@@ -28,10 +28,8 @@ export const metadata: Metadata = {
 		"Access your past Pizza Galleria orders, reorder your favorites, and track current deliveries from your order history.",
 };
 
-const fetchOrders = async () => {
+const fetchOrders = async (accessToken: string | undefined) => {
 	try {
-		const cookieStore = await cookies();
-		const accessToken = cookieStore.get("accessToken")?.value;
 		const response = await fetch(`${api}/api/order/orders/me`, {
 			headers: {
 				Authorization: `Bearer ${accessToken}`,
@@ -56,7 +54,9 @@ const fetchOrders = async () => {
 const OrderPage = async () => {
 	// const { restaurantId } = await searchParams;
 
-	const orders = await fetchOrders();
+	const cookieStore = await cookies();
+	const accessToken = cookieStore.get("accessToken")?.value;
+	const orders = await fetchOrders(accessToken);
 
 	return (
 		<section className="mt-10">
